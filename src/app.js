@@ -1,5 +1,5 @@
-import * as express from 'express';
-import productRoutes from './routes/products';
+import express from 'express';
+import productRoutes from './routes/products.js';
 
 const app = express();
 
@@ -11,4 +11,4 @@ server.on('error', error => console.log(`Error en el servidor: ${ error }`));
 
 app.use(express.json());
 
-app.use('api', productRoutes);
+app.use('/api/productos', productRoutes);
