@@ -1,9 +1,8 @@
 import express from 'express';
-import Container from '../model/Container.js';
-import Product from '../model/Producto.js';
+import ProductManager from '../manager/ProductManager.js';
+import Product from '../model/Product.js';
 
 const productRoutes = express.Router();
-
 
 const validarProducto = (req, res, next) => {
     const producto = new Product(req.body);
@@ -15,8 +14,8 @@ const validarProducto = (req, res, next) => {
 }
 
 productRoutes.get('/', (req, res) => {
-    const container = new Container('productos.json');
-    container.getAll().then((value) => {
+    const productManager = new ProductManager('productos.json');
+    productManager.getAll().then((value) => {
         value.length > 0 ? res.send(value) : res.send({ error: 'Productos no encontrados' });
     }).catch(error => {
         console.log(error);
@@ -25,10 +24,10 @@ productRoutes.get('/', (req, res) => {
 });
 
 productRoutes.get('/:id', (req, res) => {
-    const container = new Container('productos.json');
+    const productManager = new ProductManager('productos.json');
     const id = req.params.id;
     !Boolean(id) && res.send({ error: 'Debe ingresar un id de producto' });
-    container.getById(id).then((value) => {
+    productManager.getById(id).then((value) => {
         !!value ? res.send(value) : res.send({ error: 'Producto no encontrado '});
     }).catch(error => {
         res.send({ error: 'Error en la ejecución del servicio' });
@@ -36,9 +35,9 @@ productRoutes.get('/:id', (req, res) => {
 });
 
 productRoutes.post('/', validarProducto, (req, res) => {
-    const container = new Container('productos.json');
+    const productManager = new ProductManager('productos.json');
     const producto = new Product(req.body);
-    container.save(producto).then((value) => {
+    productManager.save(producto).then((value) => {
         !!value ? res.send(value) : res.send({ error: 'Error al insertar producto' });
     }).catch(error => {
         res.send({ error: 'Error en la ejecución del servicio' });
@@ -46,11 +45,11 @@ productRoutes.post('/', validarProducto, (req, res) => {
 });
 
 productRoutes.put('/:id', validarProducto, (req, res) => {
-    const container = new Container('productos.json');
+    const productManager = new ProductManager('productos.json');
     let id = req.params.id;
     !Boolean(id) && res.send({ error: 'Debe ingresar un id de producto' });
     id = Number(id);
-    container.updateById({ ...req.body, id }).then((value) => {
+    productManager.updateById({ ...req.body, id }).then((value) => {
         !!value ? res.send(value) : res.send({ error: 'Error al editar producto' });
     }).catch(error => {
         res.send({ error: 'Error en la ejecución del servicio' });
@@ -58,11 +57,11 @@ productRoutes.put('/:id', validarProducto, (req, res) => {
 });
 
 productRoutes.delete('/:id', (req, res) => {
-    const container = new Container('productos.json');
+    const productManager = new ProductManager('productos.json');
     let id = req.params.id;
     !Boolean(id) && res.send({ error: 'Debe ingresar un id de producto' });
     id = Number(id);
-    const response = container.deleteById(id);
+    const response = productManager.deleteById(id);
     response ? res.send({ message: 'Elemento eliminado con exito!' }) : res.send({ error: 'Producto no encontrado' });
 });
 
