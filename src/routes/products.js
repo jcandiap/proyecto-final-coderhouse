@@ -15,7 +15,7 @@ const validarProducto = (req, res, next) => {
 }
 
 productRoutes.get('/', (req, res) => {
-    const container = new Container('productos.txt');
+    const container = new Container('productos.json');
     container.getAll().then((value) => {
         value.length > 0 ? res.send(value) : res.send({ error: 'Productos no encontrados' });
     }).catch(error => {
@@ -25,7 +25,7 @@ productRoutes.get('/', (req, res) => {
 });
 
 productRoutes.get('/:id', (req, res) => {
-    const container = new Container('productos.txt');
+    const container = new Container('productos.json');
     const id = req.params.id;
     !Boolean(id) && res.send({ error: 'Debe ingresar un id de producto' });
     container.getById(id).then((value) => {
@@ -36,7 +36,7 @@ productRoutes.get('/:id', (req, res) => {
 });
 
 productRoutes.post('/', validarProducto, (req, res) => {
-    const container = new Container('productos.txt');
+    const container = new Container('productos.json');
     const producto = new Product(req.body);
     container.save(producto).then((value) => {
         !!value ? res.send(value) : res.send({ error: 'Error al insertar producto' });
@@ -46,7 +46,7 @@ productRoutes.post('/', validarProducto, (req, res) => {
 });
 
 productRoutes.put('/:id', validarProducto, (req, res) => {
-    const container = new Container('productos.txt');
+    const container = new Container('productos.json');
     let id = req.params.id;
     !Boolean(id) && res.send({ error: 'Debe ingresar un id de producto' });
     id = Number(id);
@@ -58,7 +58,7 @@ productRoutes.put('/:id', validarProducto, (req, res) => {
 });
 
 productRoutes.delete('/:id', (req, res) => {
-    const container = new Container('productos.txt');
+    const container = new Container('productos.json');
     let id = req.params.id;
     !Boolean(id) && res.send({ error: 'Debe ingresar un id de producto' });
     id = Number(id);

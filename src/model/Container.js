@@ -1,21 +1,21 @@
-import { readFileSync, writeFileSync } from 'fs';
+import fs from 'fs';
 
 class Container {
 
     constructor(fileName) {
         this.fileName = fileName;
-        this.fullpath = `../db/${ fileName }`;
+        this.fullpath = `./src/db/${ fileName }`;
     }
 
     async save(product) {
         return new Promise((resolve, reject) => {
             try {
-                const file = this._findFile() ? readFileSync(this.fullpath, 'utf-8') : '[]';
+                const file = this._findFile() ? fs.readFileSync(this.fullpath, 'utf-8') : '[]';
                 let object = JSON.parse(file);
                 const id = this._getMax(object);
                 const newProduct = { ...product, id }
                 object.push(newProduct);
-                writeFileSync(this.fullpath, JSON.stringify(object));
+                fs.writeFileSync(this.fullpath, JSON.stringify(object));
                 resolve(newProduct);
             } catch (error) {
                 reject(error);
@@ -26,7 +26,7 @@ class Container {
     getById(id) {
         return new Promise((resolve, reject) => {
             try {
-                const file = readFileSync(this.fullpath, 'utf-8');
+                const file = fs.readFileSync(this.fullpath, 'utf-8');
                 const object = JSON.parse(file);
                 const value = object.find(v => v.id === Number(id));
                 resolve(value);
@@ -39,7 +39,7 @@ class Container {
     getAll() {
         return new Promise((resolve, reject) => {
             try {
-                const file = readFileSync(this.fullpath, 'utf-8');
+                const file = fs.readFileSync(this.fullpath, 'utf-8');
                 const object = JSON.parse(file || '[]');
                 resolve(object);
             } catch (error) {
@@ -52,7 +52,7 @@ class Container {
         return new Promise((resolve, reject) => {
             try {
                 let flagProducto = false;
-                const file = readFileSync(this.fullpath, 'utf-8');
+                const file = fs.readFileSync(this.fullpath, 'utf-8');
                 const object = JSON.parse(file);
                 const newArray = object.map(value => {
                     if( value?.id === product.id ) {
@@ -61,7 +61,7 @@ class Container {
                     }
                     return value;
                 });
-                writeFileSync(this.fullpath, JSON.stringify(newArray));
+                fs.writeFileSync(this.fullpath, JSON.stringify(newArray));
                 flagProducto ? resolve(product) : resolve({ error: 'No se ha encontrado producto para modificar'});
             } catch (error) {
                 reject(error);
@@ -71,12 +71,12 @@ class Container {
 
     deleteById(id) {
         try {
-            const file = readFileSync(this.fullpath, 'utf-8');
+            const file = fs.readFileSync(this.fullpath, 'utf-8');
             const object = JSON.parse(file);
             const isExist = object.find(value => value.id === id);
             if( isExist ) {
                 const newArray = object.filter(value => value.id !== id);
-                writeFileSync(this.fullpath, JSON.stringify(newArray));
+                fs.writeFileSync(this.fullpath, JSON.stringify(newArray));
                 return true;
             } else {
                 return false;
@@ -93,7 +93,7 @@ class Container {
     getRandom() {
         return new Promise((resolve, reject) => {
             try {
-                const file = readFileSync('./backup/productos.txt', 'utf-8');
+                const file = fs.readFileSync('./backup/productos.txt', 'utf-8');
                 const object = JSON.parse(file);
                 const random = Math.round(Math.random() * (object.length - 1));
                 resolve(object[random]);
@@ -104,7 +104,7 @@ class Container {
     }
 
     _findFile() {
-        return existsSync(this.fullpath);
+        return fs.existsSync(this.fullpath);
     }
 
     _getMax(array) {
