@@ -11,7 +11,7 @@ class Product {
     }
 
     validarDatos() {
-        if( !this.title || !this.price || !this.thumbnail ) {
+        if( !this.title || !this.price || !this.thumbnail || !this.code ) {
             return false;
         } else {
             return true;
