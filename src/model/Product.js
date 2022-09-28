@@ -5,9 +5,8 @@ class Product {
         this.title = object?.title || '';
         this.description = object?.description || '';
         this.code = object?.code || '';
-        this.price = object?.price || '';
-        this.thumbnail = object?.thumbnail || '';
         this.price = object?.price || 0;
+        this.thumbnail = object?.thumbnail || '';
         this.stock = object?.stock || 1;
     }
 

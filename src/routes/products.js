@@ -4,7 +4,7 @@ import Product from '../model/Product.js';
 
 const productRoutes = express.Router();
 
-const isAdmin = false;
+const isAdmin = true;
 
 const validarProducto = (req, res, next) => {
     const producto = new Product(req.body);
