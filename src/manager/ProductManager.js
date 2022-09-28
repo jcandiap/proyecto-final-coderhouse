@@ -93,7 +93,7 @@ class ProductManager {
     getRandom() {
         return new Promise((resolve, reject) => {
             try {
-                const file = fs.readFileSync('./backup/productos.txt', 'utf-8');
+                const file = fs.readFileSync(this.fullpath, 'utf-8');
                 const object = JSON.parse(file);
                 const random = Math.round(Math.random() * (object.length - 1));
                 resolve(object[random]);

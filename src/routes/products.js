@@ -4,12 +4,22 @@ import Product from '../model/Product.js';
 
 const productRoutes = express.Router();
 
+const isAdmin = false;
+
 const validarProducto = (req, res, next) => {
     const producto = new Product(req.body);
     if(!producto.validarDatos()) {
         res.send({ error: 'Debe ingresar todos los datos para insertar un producto' });
     } else {
         next();
+    }
+}
+
+const validarAdministrador = (req, res, next) => {
+    if( isAdmin ) {
+        next();
+    } else {
+        res.send({ error: `ruta ${ req.baseUrl } método ${ req.method } no autorizada` })
     }
 }
 
@@ -34,7 +44,7 @@ productRoutes.get('/:id', (req, res) => {
     });
 });
 
-productRoutes.post('/', validarProducto, (req, res) => {
+productRoutes.post('/', [validarAdministrador, validarProducto], (req, res) => {
     const productManager = new ProductManager('productos.json');
     const producto = new Product(req.body);
     productManager.save(producto).then((value) => {
@@ -44,7 +54,7 @@ productRoutes.post('/', validarProducto, (req, res) => {
     })
 });
 
-productRoutes.put('/:id', validarProducto, (req, res) => {
+productRoutes.put('/:id', [validarAdministrador, validarProducto], (req, res) => {
     const productManager = new ProductManager('productos.json');
     let id = req.params.id;
     !Boolean(id) && res.send({ error: 'Debe ingresar un id de producto' });
@@ -56,7 +66,7 @@ productRoutes.put('/:id', validarProducto, (req, res) => {
     });
 });
 
-productRoutes.delete('/:id', (req, res) => {
+productRoutes.delete('/:id', validarAdministrador, (req, res) => {
     const productManager = new ProductManager('productos.json');
     let id = req.params.id;
     !Boolean(id) && res.send({ error: 'Debe ingresar un id de producto' });

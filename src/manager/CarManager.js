@@ -7,16 +7,16 @@ class CarManager {
         this.fullpath = `./src/db/${ fileName }`;
     }
 
-    async save(product) {
+    async save(car) {
         return new Promise((resolve, reject) => {
             try {
                 const file = this._findFile() ? fs.readFileSync(this.fullpath, 'utf-8') : '[]';
                 let object = JSON.parse(file);
                 const id = this._getMax(object);
-                const newProduct = { ...product, id }
-                object.push(newProduct);
+                const newCar = { ...car, id }
+                object.push(newCar);
                 fs.writeFileSync(this.fullpath, JSON.stringify(object));
-                resolve(newProduct);
+                resolve(newCar);
             } catch (error) {
                 reject(error);
             }
@@ -36,33 +36,21 @@ class CarManager {
         });
     }
 
-    getAll() {
+    updateById(car) {
         return new Promise((resolve, reject) => {
             try {
-                const file = fs.readFileSync(this.fullpath, 'utf-8');
-                const object = JSON.parse(file || '[]');
-                resolve(object);
-            } catch (error) {
-                reject(error);
-            }
-        });
-    }
-
-    updateById(product) {
-        return new Promise((resolve, reject) => {
-            try {
-                let flagProducto = false;
+                let flagCar = false;
                 const file = fs.readFileSync(this.fullpath, 'utf-8');
                 const object = JSON.parse(file);
                 const newArray = object.map(value => {
                     if( value?.id === product.id ) {
-                        flagProducto = true;
+                        flagCar = true;
                         return product;
                     }
                     return value;
                 });
                 fs.writeFileSync(this.fullpath, JSON.stringify(newArray));
-                flagProducto ? resolve(product) : resolve({ error: 'No se ha encontrado producto para modificar'});
+                flagCar ? resolve(car) : resolve({ error: 'No se ha encontrado producto para modificar'});
             } catch (error) {
                 reject(error);
             }
@@ -93,7 +81,7 @@ class CarManager {
     getRandom() {
         return new Promise((resolve, reject) => {
             try {
-                const file = fs.readFileSync('./backup/productos.txt', 'utf-8');
+                const file = fs.readFileSync(this.fullpath, 'utf-8');
                 const object = JSON.parse(file);
                 const random = Math.round(Math.random() * (object.length - 1));
                 resolve(object[random]);
