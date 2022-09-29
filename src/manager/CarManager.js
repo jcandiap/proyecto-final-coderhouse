@@ -103,14 +103,40 @@ class CarManager {
             if( !car ) return({ error: 'Carrito ingresado no encontrado' });
             car.products.push(product);
             const responseUpdate = await this.updateById(car);
-            if( !responseUpdate?.error ) {
+            if( !!responseUpdate?.error ) {
                 return(responseUpdate);
             } else {
                 return({ message: `${ product.title} agregado con exito!` })
             }
         } catch (error) {
-            console.log(error);
             return({ error: 'Error al agregar producto' });
+        }
+    }
+
+    async deleteProduct(carId, productId) {
+        try {
+            if( !carId ) return({ error: 'No se ha ingresado id de carrito' });
+            if( !productId ) return({ error: 'No se ha ingresado id de producto' });
+            let flagDelete = false;
+            let car = await this.getById(carId);
+            if( !car ) return({ error: 'Carrito ingresado no encontrado' });
+            const newArray = car.products.map(product => {
+                if( product?.id === Number(productId) && !flagDelete ) {
+                    flagDelete = true;
+                } else {
+                    return product;
+                }
+            });
+            car.products = newArray.filter(array => array);
+            const responseUpdate = await this.updateById(car);
+            if( !!responseUpdate?.error ) {
+                return(responseUpdate);
+            } else {
+                return({ message: 'Producto eliminado con exito!' })
+            }
+        } catch (error) {
+            console.log(error);
+            return({ error: 'Error al eliminar producto' });
         }
     }
 

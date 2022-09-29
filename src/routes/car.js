@@ -41,4 +41,11 @@ carRoutes.post('/:id/productos', (req, res) => {
     })
 });
 
+carRoutes.delete('/:id/productos/:id_prod', (req, res) => {
+    const carManager = new CarManager('carrito.json');
+    carManager.deleteProduct(req.params.id, req.params.id_prod).then((value) => {
+        res.send(value);
+    })
+});
+
 export default carRoutes;
