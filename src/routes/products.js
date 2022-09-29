@@ -19,7 +19,7 @@ const validarAdministrador = (req, res, next) => {
     if( isAdmin ) {
         next();
     } else {
-        res.send({ error: `ruta ${ req.baseUrl } método ${ req.method } no autorizada` })
+        res.send({ error: -1, descripcion: `ruta ${ req.baseUrl } método ${ req.method } no autorizada` })
     }
 }
 
