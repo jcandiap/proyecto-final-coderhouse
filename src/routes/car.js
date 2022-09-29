@@ -23,15 +23,22 @@ carRoutes.delete('/:id', (req, res) => {
     response ? res.send({ message: 'Elemento eliminado con exito!' }) : res.send({ error: 'Carrito no encontrado' });
 });
 
-carRoutes.get('/:id', (req, res) => {
+carRoutes.get('/:id/productos', (req, res) => {
     const carManager = new CarManager('carrito.json');
     const id = req.params.id;
     !Boolean(id) && res.send({ error: 'Debe ingresar un id de carrito' });
     carManager.getById(id).then((value) => {
-        !!value ? res.send(value.products) : res.send({ error: 'Carrito no encontrado '});
+        !!value ? res.send(value.products) : res.send({ error: 'Carrito no encontrado' });
     }).catch(error => {
         res.send({ error: 'Error en la ejecución del servicio' });
     });
+});
+
+carRoutes.post('/:id/productos', (req, res) => {
+    const carManager = new CarManager('carrito.json');
+    carManager.addProduct(req.params.id, req.body).then((value) => {
+        res.send(value);
+    })
 });
 
 export default carRoutes;

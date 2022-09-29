@@ -1,4 +1,5 @@
 import fs from 'fs';
+import ProductManager from './ProductManager.js';
 
 class CarManager {
 
@@ -29,7 +30,7 @@ class CarManager {
                 const file = fs.readFileSync(this.fullpath, 'utf-8');
                 const object = JSON.parse(file);
                 const value = object.find(v => v.id === Number(id));
-                resolve(value?.products);
+                resolve(value);
             } catch (error) {
                 reject(error);
             }
@@ -43,14 +44,14 @@ class CarManager {
                 const file = fs.readFileSync(this.fullpath, 'utf-8');
                 const object = JSON.parse(file);
                 const newArray = object.map(value => {
-                    if( value?.id === product.id ) {
+                    if( value?.id === car.id ) {
                         flagCar = true;
-                        return product;
+                        return car;
                     }
                     return value;
                 });
                 fs.writeFileSync(this.fullpath, JSON.stringify(newArray));
-                flagCar ? resolve(car) : resolve({ error: 'No se ha encontrado producto para modificar'});
+                flagCar ? resolve(car) : resolve({ error: 'No se ha encontrado carrito para modificar'});
             } catch (error) {
                 reject(error);
             }
@@ -89,6 +90,28 @@ class CarManager {
                 reject(error)
             }
         });
+    }
+
+    async addProduct(carId, carProduct) {
+        try {
+            if( !carId ) return({ error: 'No se ha ingresado id de carrito' });
+            const productManager = new ProductManager('productos.json');
+            if( !carProduct?.id ) return({ error: 'Formato de entrada invalido' });
+            const product = await productManager.getById(carProduct?.id);
+            if( !product ) return({ error: 'Producto ingreresado no encontrado' });
+            const car = await this.getById(carId);
+            if( !car ) return({ error: 'Carrito ingresado no encontrado' });
+            car.products.push(product);
+            const responseUpdate = await this.updateById(car);
+            if( !responseUpdate?.error ) {
+                return(responseUpdate);
+            } else {
+                return({ message: `${ product.title} agregado con exito!` })
+            }
+        } catch (error) {
+            console.log(error);
+            return({ error: 'Error al agregar producto' });
+        }
     }
 
     _findFile() {
