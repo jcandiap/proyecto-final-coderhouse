@@ -8,6 +8,7 @@ class Product {
         this.price = object?.price || 0;
         this.thumbnail = object?.thumbnail || '';
         this.stock = object?.stock || 1;
+        this.timestamp = object?.timestamp || '';
     }
 
     validarDatos() {

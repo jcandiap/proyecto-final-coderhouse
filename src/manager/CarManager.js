@@ -152,7 +152,7 @@ class CarManager {
     }
 
     _getTimestamp() {
-        return Date.now();
+        return Date.now().toLocaleString();
     }
 
 }

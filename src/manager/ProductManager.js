@@ -12,11 +12,11 @@ class ProductManager {
             try {
                 const file = this._findFile() ? fs.readFileSync(this.fullpath, 'utf-8') : '[]';
                 let object = JSON.parse(file || '[]');
-                const id = this._getMax(object);
-                const newProduct = { ...product, id }
-                object.push(newProduct);
+                product.id = this._getMax(object);
+                product.timestamp = this._getTimestamp();
+                object.push(product);
                 fs.writeFileSync(this.fullpath, JSON.stringify(object));
-                resolve(newProduct);
+                resolve(product);
             } catch (error) {
                 reject(error);
             }
@@ -112,6 +112,10 @@ class ProductManager {
         array.map(({ id }) => (id > maxId && (maxId = id)));
         maxId++;
         return maxId;
+    }
+
+    _getTimestamp() {
+        return Date.now();
     }
 
 }
