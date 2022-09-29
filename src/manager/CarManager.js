@@ -29,7 +29,7 @@ class CarManager {
                 const file = fs.readFileSync(this.fullpath, 'utf-8');
                 const object = JSON.parse(file);
                 const value = object.find(v => v.id === Number(id));
-                resolve(value);
+                resolve(value?.products);
             } catch (error) {
                 reject(error);
             }

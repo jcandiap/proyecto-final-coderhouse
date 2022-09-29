@@ -28,7 +28,6 @@ productRoutes.get('/', (req, res) => {
     productManager.getAll().then((value) => {
         value.length > 0 ? res.send(value) : res.send({ error: 'Productos no encontrados' });
     }).catch(error => {
-        console.log(error);
         res.send({ error: 'Error en la ejecución del servicio' });
     })
 });
