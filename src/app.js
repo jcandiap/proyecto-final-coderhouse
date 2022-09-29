@@ -14,4 +14,4 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use('/api/productos', productRoutes);
-app.use('/api/car', carRoutes);
+app.use('/api/carrito', carRoutes);

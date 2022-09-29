@@ -11,7 +11,7 @@ class ProductManager {
         return new Promise((resolve, reject) => {
             try {
                 const file = this._findFile() ? fs.readFileSync(this.fullpath, 'utf-8') : '[]';
-                let object = JSON.parse(file);
+                let object = JSON.parse(file || '[]');
                 const id = this._getMax(object);
                 const newProduct = { ...product, id }
                 object.push(newProduct);

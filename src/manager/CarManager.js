@@ -11,12 +11,12 @@ class CarManager {
         return new Promise((resolve, reject) => {
             try {
                 const file = this._findFile() ? fs.readFileSync(this.fullpath, 'utf-8') : '[]';
-                let object = JSON.parse(file);
-                const id = this._getMax(object);
-                const newCar = { ...car, id }
-                object.push(newCar);
+                let object = JSON.parse(file || '[]');
+                car.id = this._getMax(object);
+                car.timestamp = this._getTimestamp();
+                object.push(car);
                 fs.writeFileSync(this.fullpath, JSON.stringify(object));
-                resolve(newCar);
+                resolve(car);
             } catch (error) {
                 reject(error);
             }
@@ -100,6 +100,10 @@ class CarManager {
         array.map(({ id }) => (id > maxId && (maxId = id)));
         maxId++;
         return maxId;
+    }
+
+    _getTimestamp() {
+        return Date.now();
     }
 
 }
