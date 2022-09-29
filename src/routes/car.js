@@ -28,9 +28,8 @@ carRoutes.get('/:id', (req, res) => {
     const id = req.params.id;
     !Boolean(id) && res.send({ error: 'Debe ingresar un id de carrito' });
     carManager.getById(id).then((value) => {
-        !!value ? res.send(value) : res.send({ error: 'Carrito no encontrado '});
+        !!value ? res.send(value.products) : res.send({ error: 'Carrito no encontrado '});
     }).catch(error => {
-        console.log(error);
         res.send({ error: 'Error en la ejecución del servicio' });
     });
 });
