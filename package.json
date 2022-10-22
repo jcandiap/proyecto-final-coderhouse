@@ -4,7 +4,7 @@
   "description": "Proyecto final e-commerce Coderhouse",
   "main": "src/app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "NODE_OPTIONS=--experimental-vm-modules jest",
     "start": "node src/app.js",
     "dev": "nodemon src/app.js"
   },
@@ -17,5 +17,9 @@
   "type": "module",
   "dependencies": {
     "express": "^4.18.1"
+  },
+  "devDependencies": {
+    "jest": "^29.2.1",
+    "supertest": "^6.3.0"
   }
 }
