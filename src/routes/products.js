@@ -1,15 +1,17 @@
 import express from 'express';
-import ProductManager from '../manager/ProductManager.js';
+import ProductoDaoArchivos from '../dao/producto/ProductoDaoArchivos.js';
 import Product from '../model/Product.js';
 
 const productRoutes = express.Router();
+
+const productManager = new ProductoDaoArchivos();
 
 const isAdmin = true;
 
 const validarProducto = (req, res, next) => {
     const producto = new Product(req.body);
     if(!producto.validarDatos()) {
-        res.send({ error: 'Debe ingresar todos los datos para insertar un producto' });
+        res.status(400).send({ error: 'Debe ingresar todos los datos para insertar un producto' });
     } else {
         next();
     }
@@ -24,7 +26,6 @@ const validarAdministrador = (req, res, next) => {
 }
 
 productRoutes.get('/', (req, res) => {
-    const productManager = new ProductManager('productos.json');
     productManager.getAll().then((value) => {
         value.length > 0 ? res.send(value) : res.send({ error: 'Productos no encontrados' });
     }).catch(error => {
@@ -33,7 +34,6 @@ productRoutes.get('/', (req, res) => {
 });
 
 productRoutes.get('/:id', (req, res) => {
-    const productManager = new ProductManager('productos.json');
     const id = req.params.id;
     !Boolean(id) && res.send({ error: 'Debe ingresar un id de producto' });
     productManager.getById(id).then((value) => {
@@ -44,7 +44,6 @@ productRoutes.get('/:id', (req, res) => {
 });
 
 productRoutes.post('/', [validarAdministrador, validarProducto], (req, res) => {
-    const productManager = new ProductManager('productos.json');
     const producto = new Product(req.body);
     productManager.save(producto).then((value) => {
         !!value ? res.send(value) : res.send({ error: 'Error al insertar producto' });
@@ -54,7 +53,6 @@ productRoutes.post('/', [validarAdministrador, validarProducto], (req, res) => {
 });
 
 productRoutes.put('/:id', [validarAdministrador, validarProducto], (req, res) => {
-    const productManager = new ProductManager('productos.json');
     let id = req.params.id;
     !Boolean(id) && res.send({ error: 'Debe ingresar un id de producto' });
     id = Number(id);
@@ -66,7 +64,6 @@ productRoutes.put('/:id', [validarAdministrador, validarProducto], (req, res) =>
 });
 
 productRoutes.delete('/:id', validarAdministrador, (req, res) => {
-    const productManager = new ProductManager('productos.json');
     let id = req.params.id;
     !Boolean(id) && res.send({ error: 'Debe ingresar un id de producto' });
     id = Number(id);

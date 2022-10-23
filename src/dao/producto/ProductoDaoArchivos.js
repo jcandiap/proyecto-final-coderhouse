@@ -1,9 +1,9 @@
 import ContenedorArchivos from "../../containers/ContenedorArchivos.js";
 
-class CarritoDaoArchivos extends ContenedorArchivos{
+class ProductoDaoArchivos extends ContenedorArchivos {
     
     constructor(){
-        super('./src/db/file/carrito.json');
+        super('./src/db/file/productos.json');
     }
 
     async desconectar(){
@@ -11,4 +11,4 @@ class CarritoDaoArchivos extends ContenedorArchivos{
 
 }
 
-export default CarritoDaoArchivos;
+export default ProductoDaoArchivos;

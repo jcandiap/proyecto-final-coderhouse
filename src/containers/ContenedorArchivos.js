@@ -7,7 +7,7 @@ class ContenedorArchivos {
 
     async save(newRegister) {
         try {
-            const file = await this._findFile() ? await fs.readFile(this.ruta, 'utf-8') : '[]';
+            const file =  await fs.readFile(this.ruta, 'utf-8') || '[]';
             let object = JSON.parse(file || '[]');
             newRegister.id = this._getMax(object);
             newRegister.timestamp = this._getTimestamp();
@@ -15,6 +15,7 @@ class ContenedorArchivos {
             await fs.writeFile(this.ruta, JSON.stringify(object));
             return newRegister;
         } catch (error) {
+            console.log(error);
             throw new Error('Error al guardar el registro');
         }
     }
@@ -36,6 +37,7 @@ class ContenedorArchivos {
             const object = JSON.parse(file);
             return object
         } catch (error) {
+            console.log(error);
             throw new Error(`Error al obtener los registros`);
         }
     }
@@ -45,6 +47,7 @@ class ContenedorArchivos {
             let flagCar = false;
             const file = await fs.readFile(this.ruta, 'utf-8');
             const object = JSON.parse(file);
+            registerUpdate.timestamp = this._getTimestamp();
             const newArray = object.map(value => {
                 if( value?.id === registerUpdate.id ) {
                     flagCar = true;
@@ -95,10 +98,6 @@ class ContenedorArchivos {
         }
     }
 
-    async _findFile() {
-        return await fs.exists(this.ruta);
-    }
-
     _getMax(array) {
         let maxId = 0;
         array.map(({ id }) => (id > maxId && (maxId = id)));
@@ -107,7 +106,7 @@ class ContenedorArchivos {
     }
 
     _getTimestamp() {
-        return Date.now().toLocaleString();
+        return Date.now();
     }
 
 }

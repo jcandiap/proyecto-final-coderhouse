@@ -1,51 +1,60 @@
 import express from 'express';
-import CarManager from '../manager/CarManager.js';
+import CarritoDaoArchivos from '../dao/carrito/CarritoDaoArchivos.js';
 import Car from '../model/Car.js';
 
 const carRoutes = express.Router();
 
-carRoutes.post('/', (req, res) => {
-    const carManager = new CarManager('carrito.json');
+const carManager = new CarritoDaoArchivos();
+
+carRoutes.post('/', async (req, res) => {
     const car = new Car({});
-    carManager.save(car).then((value) => {
-        !!value ? res.send(value) : res.send({ error: 'Error al ingresar nuevo carrito' });
-    }).catch(error => {
+    try {
+        const newCar = await carManager.save(car);
+        !!newCar ? res.status(200).send(newCar) : res.status(400).send({ error: 'Error al ingresar nuevo carrito' });
+    } catch (error) {
         res.send({ error: 'Error en la ejecución del servicio' });
-    })
+    }
 });
 
-carRoutes.delete('/:id', (req, res) => {
-    const carManager = new CarManager('carrito.json');
+carRoutes.get('/', async (req, res) => {
+    try {
+        const result = await carManager.getAll();
+        res.status(200).send(result);
+    } catch (error) {
+        res.status(400).send({ error: 'Error en la ejecución del servicio' });
+    }
+});
+
+carRoutes.get('/:id', async (req, res) => {
+    const id = req.params.id;
+    !Boolean(id) && res.status(400).send({ error: 'Debe ingresar un id de carrito' });
+    try {
+        const result = await carManager.getById(id);
+        if( !!result ) {
+            res.status(200).send(result);
+        } else {
+            res.status(400).send({ error: 'Carrito no encontrado' });
+        }
+    } catch (error) {
+        res.status(400).send({ error: 'Error en la ejecución del servicio' });
+    }
+});
+
+carRoutes.delete('/:id', async (req, res) => {
     let id = req.params.id;
     !Boolean(id) && res.send({ error: 'Debe ingresar un id de un carrito' });
     id = Number(id);
-    const response = carManager.deleteById(id);
-    response ? res.send({ message: 'Elemento eliminado con exito!' }) : res.send({ error: 'Carrito no encontrado' });
+    const response = await carManager.deleteById(id);
+    response ? res.status(200).send({ message: 'Elemento eliminado con exito!' }) : res.status(400).send({ error: 'Carrito no encontrado' });
 });
 
-carRoutes.get('/:id/productos', (req, res) => {
-    const carManager = new CarManager('carrito.json');
-    const id = req.params.id;
-    !Boolean(id) && res.send({ error: 'Debe ingresar un id de carrito' });
-    carManager.getById(id).then((value) => {
-        !!value ? res.send(value.products) : res.send({ error: 'Carrito no encontrado' });
-    }).catch(error => {
-        res.send({ error: 'Error en la ejecución del servicio' });
-    });
-});
-
-carRoutes.post('/:id/productos', (req, res) => {
-    const carManager = new CarManager('carrito.json');
-    carManager.addProduct(req.params.id, req.body).then((value) => {
-        res.send(value);
-    })
-});
-
-carRoutes.delete('/:id/productos/:id_prod', (req, res) => {
-    const carManager = new CarManager('carrito.json');
-    carManager.deleteProduct(req.params.id, req.params.id_prod).then((value) => {
-        res.send(value);
-    })
+carRoutes.put('/', async (req, res) => {
+    const updatedRegister = await carManager.updateById(req.body);
+    if( !!updatedRegister ) {
+        res.status(200).send(updatedRegister);
+    } else {
+        res.status(400).send({ error: 'Error al editar carrito' });
+    }
 });
 
 export default carRoutes;
