@@ -1,7 +1,6 @@
 class Product {
 
     constructor(object) {
-        this.id = object?.id || 0;
         this.title = object?.title || '';
         this.description = object?.description || '';
         this.code = object?.code || '';

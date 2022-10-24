@@ -1,10 +1,11 @@
 import express from 'express';
 import CarritoDaoArchivos from '../dao/carrito/CarritoDaoArchivos.js';
+import CarritoDaoSqlite from '../dao/carrito/CarritoDaoSqlite.js';
 import Car from '../model/Car.js';
 
 const carRoutes = express.Router();
 
-const carManager = new CarritoDaoArchivos();
+const carManager = new CarritoDaoSqlite();
 
 carRoutes.post('/', async (req, res) => {
     const car = new Car({});
@@ -53,7 +54,7 @@ carRoutes.put('/', async (req, res) => {
     if( !!updatedRegister ) {
         res.status(200).send(updatedRegister);
     } else {
-        res.status(400).send({ error: 'Error al editar carrito' });
+        res.status(400).send({ error: 'Error al modificar el carrito' });
     }
 });
 

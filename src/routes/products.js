@@ -25,50 +25,62 @@ const validarAdministrador = (req, res, next) => {
     }
 }
 
-productRoutes.get('/', (req, res) => {
-    productManager.getAll().then((value) => {
-        value.length > 0 ? res.send(value) : res.send({ error: 'Productos no encontrados' });
-    }).catch(error => {
-        res.send({ error: 'Error en la ejecución del servicio' });
-    })
+productRoutes.get('/', async (req, res) => {
+    try {
+        const result = await productManager.getAll();
+        res.status(200).send(result);
+    } catch (error) {
+        res.status(400).send({ error: 'Error en la ejecución del servicio' });
+    }
 });
 
-productRoutes.get('/:id', (req, res) => {
+productRoutes.get('/:id', async (req, res) => {
     const id = req.params.id;
     !Boolean(id) && res.send({ error: 'Debe ingresar un id de producto' });
-    productManager.getById(id).then((value) => {
-        !!value ? res.send(value) : res.send({ error: 'Producto no encontrado '});
-    }).catch(error => {
-        res.send({ error: 'Error en la ejecución del servicio' });
-    });
+    try {
+        const result = await productManager.getById(id);
+        if( !!result ) {
+            res.status(200).send(result);
+        } else {
+            res.status(400).send({ error: 'Producto no encontrado' });
+        }
+    } catch (error) {
+        res.status(400).send({ error: 'Error en la ejecución del servicio' });
+    }
 });
 
-productRoutes.post('/', [validarAdministrador, validarProducto], (req, res) => {
+productRoutes.post('/', [validarAdministrador, validarProducto], async (req, res) => {
     const producto = new Product(req.body);
-    productManager.save(producto).then((value) => {
-        !!value ? res.send(value) : res.send({ error: 'Error al insertar producto' });
-    }).catch(error => {
-        res.send({ error: 'Error en la ejecución del servicio' });
-    })
+    try {
+        const newProduct = await productManager.save(producto);
+        !!newProduct ? res.status(200).send(newProduct) : res.status(400).send({ error: 'Error al ingresar nuevo producto' });
+    } catch (error) {
+        res.status(400).send({ error: 'Error en la ejecución del servicio' });
+    }
 });
 
-productRoutes.put('/:id', [validarAdministrador, validarProducto], (req, res) => {
+productRoutes.put('/:id', [validarAdministrador, validarProducto], async (req, res) => {
     let id = req.params.id;
     !Boolean(id) && res.send({ error: 'Debe ingresar un id de producto' });
     id = Number(id);
-    productManager.updateById({ ...req.body, id }).then((value) => {
-        !!value ? res.send(value) : res.send({ error: 'Error al editar producto' });
-    }).catch(error => {
-        res.send({ error: 'Error en la ejecución del servicio' });
-    });
+    try {
+        const response = await productManager.updateById({ ...req.body, id });
+        !!response ? res.status(200).send(response) : res.status(400).send({ error: 'Error al editar producto' });
+    } catch(error) {
+        res.status(400).send({ error: 'Error en la ejecución del servicio' });
+    }
 });
 
-productRoutes.delete('/:id', validarAdministrador, (req, res) => {
+productRoutes.delete('/:id', validarAdministrador, async (req, res) => {
     let id = req.params.id;
     !Boolean(id) && res.send({ error: 'Debe ingresar un id de producto' });
     id = Number(id);
-    const response = productManager.deleteById(id);
-    response ? res.send({ message: 'Elemento eliminado con exito!' }) : res.send({ error: 'Producto no encontrado' });
+    try {
+        const response = await productManager.deleteById(id);
+        !!response ? res.status(200).send(response) : res.status(400).send({ error: 'Error al eliminar producto' });
+    } catch(error) {
+        res.status(400).send({ error: 'Error en la ejecución del servicio' });
+    }
 });
 
 export default productRoutes;
