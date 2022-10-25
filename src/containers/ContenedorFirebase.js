@@ -49,11 +49,8 @@ class ContenedorFirebase {
         try {
             await this.connect();
             const db = admin.firestore();
-            console.log('1')
             const collection = db.collection(this.collection);
-            console.log('2')
             const result = await collection.get();
-            console.log('3')
             result.forEach(doc => {
                 const object = doc.data();
                 object._id = doc.id;
