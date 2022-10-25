@@ -1,10 +1,12 @@
 import express from 'express';
 import ProductoDaoArchivos from '../dao/producto/ProductoDaoArchivos.js';
+import ProductoDaoFirebase from '../dao/producto/ProductoDaoFirebase.js';
+import ProductoDaoMongoDB from '../dao/producto/ProductoDaoMongoDB.js';
 import Product from '../model/Product.js';
 
 const productRoutes = express.Router();
 
-const productManager = new ProductoDaoArchivos();
+const productManager = new ProductoDaoFirebase();
 
 const isAdmin = true;
 
@@ -62,7 +64,6 @@ productRoutes.post('/', [validarAdministrador, validarProducto], async (req, res
 productRoutes.put('/:id', [validarAdministrador, validarProducto], async (req, res) => {
     let id = req.params.id;
     !Boolean(id) && res.send({ error: 'Debe ingresar un id de producto' });
-    id = Number(id);
     try {
         const response = await productManager.updateById({ ...req.body, id });
         !!response ? res.status(200).send(response) : res.status(400).send({ error: 'Error al editar producto' });
@@ -74,10 +75,9 @@ productRoutes.put('/:id', [validarAdministrador, validarProducto], async (req, r
 productRoutes.delete('/:id', validarAdministrador, async (req, res) => {
     let id = req.params.id;
     !Boolean(id) && res.send({ error: 'Debe ingresar un id de producto' });
-    id = Number(id);
     try {
         const response = await productManager.deleteById(id);
-        !!response ? res.status(200).send(response) : res.status(400).send({ error: 'Error al eliminar producto' });
+        !!response ? res.status(200).send({ message: 'Elemento eliminado con exito!' }) : res.status(400).send({ error: 'Error al eliminar producto' });
     } catch(error) {
         res.status(400).send({ error: 'Error en la ejecución del servicio' });
     }
