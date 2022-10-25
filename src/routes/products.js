@@ -6,7 +6,7 @@ import Product from '../model/Product.js';
 
 const productRoutes = express.Router();
 
-const productManager = new ProductoDaoMongoDB();
+const productManager = new ProductoDaoFirebase();
 
 const isAdmin = true;
 

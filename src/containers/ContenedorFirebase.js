@@ -83,6 +83,20 @@ class ContenedorFirebase {
         }
     }
 
+    async addProductToCar(idCar, idProduct) {
+        try {
+            const car = await this.getById(idCar);
+            this.collection = 'productos';
+            const product = await this.getById(idProduct);
+            this.collection = 'carrito';
+            car.products.push(product);
+            await this.updateById(car);
+            return true;
+        } catch (error) {
+            throw new Error('Error al agregar el producto');
+        }
+    }
+
     _getTimestamp() {
         return new Date().getTime();
     }

@@ -7,7 +7,7 @@ import Car from '../model/Car.js';
 
 const carRoutes = express.Router();
 
-const carManager = new CarritoDaoMongoDB();
+const carManager = new CarritoDaoFirebase();
 
 carRoutes.post('/', async (req, res) => {
     const car = new Car({});
