@@ -5,6 +5,7 @@ class ContenedorFirebase {
 
     constructor(collection) {
         this.collection = collection;
+        this.connect();
     }
 
     async connect() {
@@ -17,10 +18,9 @@ class ContenedorFirebase {
     
     async save(newRegister) {
         try {
-            this.connect();
             const db = admin.firestore();
             newRegister.timestamp = this._getTimestamp();
-            const result = await db.collection(this.collection).add(newRegister);
+            const result = await db.collection(this.collection).add({ ...newRegister });
             newRegister._id = result.id;
             return newRegister;
         } catch (error) {
@@ -32,7 +32,6 @@ class ContenedorFirebase {
     async getById(id) {
         let objects = [];
         try {
-            this.connect();
             const db = admin.firestore();
             const result = await db.collection(this.collection).doc(id).get();
             objects = result.data();
@@ -47,7 +46,6 @@ class ContenedorFirebase {
     async getAll() {
         let objects = [];
         try {
-            await this.connect();
             const db = admin.firestore();
             const collection = db.collection(this.collection);
             const result = await collection.get();
@@ -65,7 +63,6 @@ class ContenedorFirebase {
 
     async updateById(registerUpdate) {
         try {
-            this.connect();
             const db = admin.firestore();
             const result = await db.collection(this.collection).doc(registerUpdate._id).update(registerUpdate);
             return registerUpdate;
@@ -77,9 +74,9 @@ class ContenedorFirebase {
 
     async deleteById(id) {
         try {
-            this.connect();
             const db = admin.firestore();
             await db.collection(this.collection).doc(id).delete();
+            return true;
         } catch (error) {
             console.log(error)
             throw new Error('Error al eliminar el registro');
