@@ -8,9 +8,6 @@
     "start": "node src/app.js",
     "dev": "nodemon src/app.js"
   },
-  "engines": {
-    "node": "16.x"
-  },
   "keywords": [],
   "author": "José Candia",
   "license": "ISC",
