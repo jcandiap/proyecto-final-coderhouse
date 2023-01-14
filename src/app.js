@@ -1,6 +1,7 @@
 import express from 'express';
 import productRoutes from './routes/products.js';
 import carRoutes from './routes/car.js';
+import userRouters from './routes/user.js';
 
 const app = express();
 
@@ -15,6 +16,7 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use('/api/productos', productRoutes);
 app.use('/api/carrito', carRoutes);
+app.use('/api/usuario', userRouters);
 
 app.use((req, res) => {
     res.status(400).send({ error: -2, descripcion: `ruta ${ req.baseUrl }${ req.url } método ${ req.method } no implementado` });
