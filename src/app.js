@@ -2,6 +2,9 @@ import express from 'express';
 import productRoutes from './routes/products.js';
 import carRoutes from './routes/car.js';
 import userRouters from './routes/user.js';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 const app = express();
 
