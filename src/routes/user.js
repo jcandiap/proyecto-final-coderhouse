@@ -1,14 +1,12 @@
 import express from 'express';
 import UsuarioDaoMongoDB from '../dao/usuario/UsuarioDaoMongoDB.js';
-import { userRegister } from '../middleware/userMiddleware.js';
+import { userLogin, userRegister } from '../middleware/userMiddleware.js';
 
 const userRouters = express.Router();
 const userManager = new UsuarioDaoMongoDB();
 
-userRouters.post('/login', async (req, res) => {
-    const { email, password } = req.body;
-    !Boolean(email) && res.status(400).send({ error: 'Debe ingresar un email' });
-    !Boolean(password) && res.status(400).send({ error: 'Debe ingresar una contraseña' });
+userRouters.post('/login', userLogin, async (req, res) => {
+    const user = req.body;
     try {
         const result = await userManager.login(email, password
         );

@@ -30,3 +30,16 @@ export const userRegister = async (req, res, next) => {
     }
     next();
 };
+
+export const userLogin = async (req, res, next) => {
+    const { email, password } = req.body;
+    if( !Boolean(email) ) {
+        res.status(400).send({ error: 'Debe ingresar un email' });
+        return;
+    }
+    if( !Boolean(password) ) {
+        res.status(400).send({ error: 'Debe ingresar una contraseña' });
+        return;
+    }
+    next();
+}
