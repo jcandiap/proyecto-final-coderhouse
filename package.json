@@ -19,6 +19,7 @@
     "knex": "^2.3.0",
     "mongodb": "^4.11.0",
     "mongoose": "^6.6.7",
+    "nodemailer": "^6.9.0",
     "sqlite3": "^5.1.2"
   },
   "devDependencies": {
