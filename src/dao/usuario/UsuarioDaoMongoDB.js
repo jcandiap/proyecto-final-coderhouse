@@ -20,6 +20,20 @@ class UsuarioDaoMongoDB extends ContenedorMongoDB {
         }
     }
 
+    async login(user) {
+        try {
+            const collection = await this.connect();
+            const userFound = await collection.findOne({ email: user.email });
+            await this.disconnect();
+            if (!userFound) return null;
+            const passwordMatch = await bcrypt.compare(user.password, userFound.password);
+            if (!passwordMatch) return null;
+            return userFound;
+        } catch (error) {
+            console.log('Error al iniciar sesión', error);
+            throw new Error('Error al iniciar sesión');
+        }
+    }
 }
 
 export default UsuarioDaoMongoDB;
