@@ -10,6 +10,10 @@ class UsuarioDaoMongoDB extends ContenedorMongoDB {
     async register(user) {
         try {
             const collection = await this.connect();
+            const userFound = await collection.findOne({ email: user.email });
+            if( userFound ) {
+                return { error: 'Usuario ya se encuentra registrado' };
+            }
             user.password = await bcrypt.hash(user.password, 10);
             const insertedUser = collection.insertOne(user);
             await this.disconnect();
