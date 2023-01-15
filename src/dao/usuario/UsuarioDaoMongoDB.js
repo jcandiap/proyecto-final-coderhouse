@@ -15,9 +15,11 @@ class UsuarioDaoMongoDB extends ContenedorMongoDB {
                 return { error: 'Usuario ya se encuentra registrado' };
             }
             user.password = await bcrypt.hash(user.password, 10);
-            const insertedUser = collection.insertOne(user);
+            const insertedUserId = await collection.insertOne(user);
+            const { nombre, email } = await collection.findOne({ _id: insertedUserId.insertedId });
+            const returnedUser = { nombre, email };
             await this.disconnect();
-            return insertedUser;
+            return returnedUser;
         } catch (error) {
             console.log('Error al registrar usuario', error);
             throw new Error('Error al registrar usuario');

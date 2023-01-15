@@ -1,6 +1,7 @@
 import express from 'express';
 import UsuarioDaoMongoDB from '../dao/usuario/UsuarioDaoMongoDB.js';
 import { userLogin, userRegister } from '../middleware/userMiddleware.js';
+import { sendConfirmationEmail, sendNewRegister } from '../notifications/mailer.js';
 
 const userRouters = express.Router();
 const userManager = new UsuarioDaoMongoDB();
@@ -24,10 +25,20 @@ userRouters.post('/register', userRegister, async (req, res) => {
             res.status(400).send(result);
             return;
         }
+        sendNewRegister(result.nombre, result.email);
         result ? res.status(200).send({ message: "Usuario registrado con exito!"}) : res.status(400).send({ error: 'Error al registrar usuario' });
     } catch (error) {
         res.status(400).send({ error: error.message });
     }
 });
+
+userRouters.post('/confirmar-compra', async (req, res) => {
+    try {
+        await sendConfirmationEmail('josecandiap@gmail.com', null);
+        res.status(200).send({ message: 'Email enviado con exito '});
+    } catch (error) {
+        res.status(400).send({ error: error.message });
+    }
+})
 
 export default userRouters;
