@@ -9,9 +9,11 @@ class UsuarioDaoMongoDB extends ContenedorMongoDB {
 
     async register(user) {
         try {
+            const collection = await this.connect();
             user.password = await bcrypt.hash(user.password, 10);
-            // const result = await this.db.insert(user);
-            return user;
+            const insertedUser = collection.insertOne(user);
+            await this.disconnect();
+            return insertedUser;
         } catch (error) {
             console.log('Error al registrar usuario', error);
             throw new Error('Error al registrar usuario');
