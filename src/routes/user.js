@@ -2,6 +2,7 @@ import express from 'express';
 import UsuarioDaoMongoDB from '../dao/usuario/UsuarioDaoMongoDB.js';
 import { userLogin, userRegister } from '../middleware/userMiddleware.js';
 import { sendConfirmationEmail, sendNewRegister } from '../notifications/mailer.js';
+import { sendMessageWhatsapp } from '../notifications/whatsapp.js';
 
 const userRouters = express.Router();
 const userManager = new UsuarioDaoMongoDB();
@@ -35,6 +36,7 @@ userRouters.post('/register', userRegister, async (req, res) => {
 userRouters.post('/confirmar-compra', async (req, res) => {
     try {
         await sendConfirmationEmail('josecandiap@gmail.com', null);
+        await sendMessageWhatsapp('+56998938621', req.body || []);
         res.status(200).send({ message: 'Email enviado con exito '});
     } catch (error) {
         res.status(400).send({ error: error.message });
