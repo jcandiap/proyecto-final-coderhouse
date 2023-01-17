@@ -21,7 +21,8 @@
 Utilizar alguno de los loggers ya vistos y así reemplazar todos los mensajes a consola por logs eficientes hacie la misma consola. En el caso de errores moderados ó graves el log tendrá además como destino un archivo elegido.
 - Realizar una prueba de performance en modo local, con y sin cluster, utilizando [Artillery](https://www.npmjs.com/package/artillery) en el endpoint del listado de productos (con el usuario vez logueado). Verificar los resultados.
 <a name="resolucion"></a>
-
+# Resolución del desafio
+De acuerdo con lo explicado por el profesor durante la clase, para este desafio no era necesario el desarrollo de la interfaz grafica, solo manejo de los metodos por [Postman](https://api.postman.com/collections/6252878-bf1c0e51-0550-4298-8e59-853e5cfd4bda?access_key=PMAT-01GQ0B9YZW5JDPS0DTZPGDVEKT) 👨‍🚀
 # Pruebas realizadas con Artillery
 ## Productos
 ```bash
