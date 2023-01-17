@@ -10,18 +10,33 @@ const transport = nodemailer.createTransport({
     }
 });
 
-export const sendConfirmationEmail = async (email, products) => {
+export const sendConfirmationEmail = async (products, nombre, email) => {
     try {
-        const htmlFormat = readFileSync('./src/notifications/mailformat.html', 'utf-8');
+        let htmlFormat = readFileSync('./src/notifications/mailformat.html', 'utf-8');
+        htmlFormat = htmlFormat.replace(/%USER_NAME%/g, nombre);
+        htmlFormat = htmlFormat.replace(/%USER_EMAIL%/g, email);
+        if( Boolean(products) || products.length > 0 ) {
+            let productsFormat = '';
+            products.map(product => {
+                productsFormat = `<tr>
+                    <td>${ products.filter(p => product.id === p.id).length }</td>
+                    <td>${ product.description }</td>
+                    <td>$${ product.price }</td>
+                <tr>`;
+            }); 
+            htmlFormat = htmlFormat.replace(/%PRODUCTS%/g, productsFormat);
+        } else {
+            htmlFormat = htmlFormat.replace(/%PRODUCTS%/g, '');
+        }
         const mailerOptions = {
             from: 'Ecommerce Coderhouse',
-            to: email,
-            subject: 'Confirmación de compra',
+            to: process.env.ADMIN_EMAIL,
+            subject: `Nuevo pedido de ${ nombre } (${ email })`,
             html: htmlFormat
         }
         const info = await transport.sendMail(mailerOptions);
     } catch (error) {
-        throw new Error('Error al enviar confirmación por email'); 
+        console.error(error.message);
     }
 }
 
@@ -38,6 +53,6 @@ export const sendNewRegister = async (nombre, email) => {
         }
         const info = await transport.sendMail(mailerOptions);
     } catch (error) {
-        throw new Error('Error al enviar confirmación por email'); 
+        console.error(error.message);
     }
 }
