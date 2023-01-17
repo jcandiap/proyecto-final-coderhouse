@@ -1,8 +1,5 @@
 import express from 'express';
-import CarritoDaoArchivos from '../dao/carrito/CarritoDaoArchivos.js';
-import CarritoDaoFirebase from '../dao/carrito/CarritoDaoFirebase.js';
 import CarritoDaoMongoDB from '../dao/carrito/CarritoDaoMongoDB.js';
-import CarritoDaoSqlite from '../dao/carrito/CarritoDaoSqlite.js';
 import Car from '../model/Car.js';
 import log4js from 'log4js';
 
