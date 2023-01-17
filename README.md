@@ -18,6 +18,6 @@ Dentro de las pruebas se pudieron ver muchos codigos de error debido a la cantid
 ###
 ![](https://i.imgur.com/5FJl9Oz.jpg)
 #
-Carro: Si bien el tiempo medio de respuesta del modo fork (2322.1) fue mas alto que el del modo cluster (2186.8), este pudo procesar mayor cantidad de solicitudes (14 de modo FORK vs 8 de modo CLUSTER).
+Carro: El tiempo de respuesta medio del [modo fork](https://github.com/jcandiap/proyecto-final-coderhouse/blob/main/car_fork.txt) fue menor que el del [modo cluster](https://github.com/jcandiap/proyecto-final-coderhouse/blob/main/car_cluster.txt) donde igualmente el modo fork pudo procesar exitosamente mayor cantidad de solicitudes en comparación al modo cluster (132 vs 15)
 ##
 Productos:  
