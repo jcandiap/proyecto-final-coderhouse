@@ -1,27 +1,19 @@
 import Twilio from 'twilio';
 
-export const sendMessageWhatsapp = async (telefono, resumenCompra) => {
+export const sendMessageWhatsapp = async (usuario, email) => {
     try {
         const accountSid = process.env.TWILIO_SID;
         const authToken = process.env.TWILIO_TOKEN;
         const client = new Twilio(accountSid, authToken)
-        let tablaResumen;
-        let message = 'Tu compra ha sido confirmada con exito!\nA continuación te mostramos un resumen de tu compra:'
-        if( resumenCompra.length > 0 ) {
-            resumenCompra.map(resumen => {
-                tablaResumen += `\n${ resumen.amount } ${ resumen.description }        $${ resumen.amount * resumen.price }`;
-            });
-        }
-        message += tablaResumen;
+        let message = `¡Confirmación de compra! El usuario ${ usuario } (${ email }) ha realizado una compra con exito!`;
         const options = {
             body: message,
             from: `whatsapp:${ process.env.TWILIO_NUMBER }`,
-            to: `whatsapp:${ telefono }`
+            to: `whatsapp:${ process.env.ADMIN_NUMBER }`
         }
         const { status } = await client.messages.create(options);
         return status;
     } catch (error) {
         console.error(error);
-        throw new Error('Error al enviar mensaje');
     }
 }
