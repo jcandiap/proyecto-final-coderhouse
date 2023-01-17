@@ -22,7 +22,8 @@
     "mongoose": "^6.6.7",
     "nodemailer": "^6.9.0",
     "sqlite3": "^5.1.2",
-    "twilio": "^3.84.1"
+    "twilio": "^3.84.1",
+    "yargs": "^17.6.2"
   },
   "devDependencies": {
     "jest": "^29.2.1",
