@@ -3,14 +3,34 @@ import productRoutes from './routes/products.js';
 import carRoutes from './routes/car.js';
 import userRouters from './routes/user.js';
 import dotenv from 'dotenv';
+import yargs from 'yargs/yargs';
+import cluster from 'cluster';
 
 dotenv.config();
+
+const argv = yargs(process.argv.slice(1))
+    .default('modo', 'FORK')
+    .alias('m', 'modo')
+    .alias('c', 'cluster')
+    .argv;
+
+const SERVER_TYPE = argv.modo || 'FORK';
 
 const app = express();
 
 const PORT = process.env.PORT || 8080;
 
-const server = app.listen(PORT, () => console.log(`Server up on port ${ PORT }`));
+let server = null;
+
+if( SERVER_TYPE !== 'FORK' ) {
+    if( cluster.isPrimary ) {
+        for (let i = 0; i < os.cpus().length; i++) cluster.fork();
+    } else {
+        server = app.listen(PORT, () => console.log(`Servidor iniciado en mondo ${ SERVER_TYPE } en el puerto ${ PORT } y el proceso ${ process.pid }`));
+    }
+} else {
+    server = app.listen(PORT, () => console.log(`Servidor iniciado en mondo ${ SERVER_TYPE } en el puerto ${ PORT } y el proceso ${ process.pid }`));
+}
 
 server.on('error', error => console.log(`Error en el servidor: ${ error }`));
 

@@ -5,8 +5,8 @@
   "main": "src/app.js",
   "scripts": {
     "test": "NODE_OPTIONS=--experimental-vm-modules jest",
-    "start": "node src/app.js",
-    "dev": "nodemon src/app.js"
+    "start": "node src/app.js --modo=CLUSTER",
+    "dev": "nodemon src/app.js --modo=CLUSTER"
   },
   "keywords": [],
   "author": "José Candia",
