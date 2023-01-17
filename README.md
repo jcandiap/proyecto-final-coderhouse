@@ -1,4 +1,9 @@
 # Tercera entrega
+[Click aca para ver la resolución](#resolucion)
+#
+## Author
+- [@jcandiap](https://github.com/jcandiap)
+#
 - Un menú de registro y autenticación de usuarios basado en passport local, guardando en la base de datos las credenciales y el resto de los ingresados al momento del registro.
     - El registro de usuario consiste en crear una cuenta en el servidor almacenada en la base de datos, que contenga el email y password de usuario, además de su nombre, dirección, edad, número de teléfono (debe contener todos los prefijos internacionales) y foto ó avatar. La contraseña se almacenará encriptada en la base de datos.
     - La imagen se podrá subir al servidor y se guardara en una carpeta pública del mismo a la cual se tenga acceso por url.
@@ -15,6 +20,7 @@
 - Habilitar el modo cluster para el servidor, como opcional a través de una constante global.
 Utilizar alguno de los loggers ya vistos y así reemplazar todos los mensajes a consola por logs eficientes hacie la misma consola. En el caso de errores moderados ó graves el log tendrá además como destino un archivo elegido.
 - Realizar una prueba de performance en modo local, con y sin cluster, utilizando [Artillery](https://www.npmjs.com/package/artillery) en el endpoint del listado de productos (con el usuario vez logueado). Verificar los resultados.
+<a name="resolucion"></a>
 
 # Pruebas realizadas con Artillery
 ## Productos
@@ -39,3 +45,5 @@ Dentro de las pruebas se pudieron ver muchos codigos de error debido a la cantid
 Carro: El tiempo de respuesta medio del [modo fork](https://github.com/jcandiap/proyecto-final-coderhouse/blob/main/car_fork.txt) fue menor que el del [modo cluster](https://github.com/jcandiap/proyecto-final-coderhouse/blob/main/car_cluster.txt) donde por otro lado el modo cluster pudo procesar exitosamente mayor cantidad de solicitudes en comparación al modo cluster (219 vs 215)
 ##
 Productos: El [modo cluster](https://github.com/jcandiap/proyecto-final-coderhouse/blob/main/products_cluster.txt) pudo procesar mas solicitudes de forma exitosa a diferencia de el [modo fork](https://github.com/jcandiap/proyecto-final-coderhouse/blob/main/products_fork.txt) y el tiempo de respuesta medio tambien fue mas bajo (2725 vs 2836.2)
+## 🔗 Links
+[![linkedin](https://img.shields.io/badge/linkedin-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/jcandiap/)
