@@ -17,7 +17,6 @@ class ContenedorMongoDB {
             const collection = database.collection(this.collection);
             return collection;
         } catch (error) {
-            console.log('Error al conectar a MongoDB: ', error);
             return null;
         }
     }
@@ -47,7 +46,6 @@ class ContenedorMongoDB {
             object = await collection.findOne({ _id: o_id });
             await this.disconnect();
         } catch (error) {
-            console.log(error);
             throw new Error('Error al obtener todos los registros');
         }
         return object;
@@ -60,7 +58,6 @@ class ContenedorMongoDB {
             objects = await collection.find({}).toArray();
             await this.disconnect();
         } catch (error) {
-            console.log(error);
             throw new Error('Error al obtener todos los registros');
         }
         return objects;
@@ -76,7 +73,6 @@ class ContenedorMongoDB {
             await this.disconnect();
             return registerUpdate;
         } catch (error) {
-            console.log(error)
             throw new Error('Error al actualizar el registro');
         }
     }
@@ -86,7 +82,6 @@ class ContenedorMongoDB {
             const collection = await this.connect();
             const o_id = new mongo.ObjectId(registerDelete);
             const deleted = await collection.findOneAndDelete({ _id: o_id });
-            console.log(registerDelete, deleted);
             await this.disconnect();
             return deleted;
         } catch (error) {
