@@ -28,7 +28,6 @@ class ProductoDaoSqlite extends ContenedorSqlite{
                 });
             }
         } catch(error) {
-            console.log('Error al validar tabla', error);
             throw new Error('Error al validar tabla');
         }
     }

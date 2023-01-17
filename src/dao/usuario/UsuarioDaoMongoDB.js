@@ -21,7 +21,6 @@ class UsuarioDaoMongoDB extends ContenedorMongoDB {
             await this.disconnect();
             return returnedUser;
         } catch (error) {
-            console.log('Error al registrar usuario', error);
             throw new Error('Error al registrar usuario');
         }
     }
@@ -36,7 +35,6 @@ class UsuarioDaoMongoDB extends ContenedorMongoDB {
             if (!passwordMatch) return null;
             return userFound;
         } catch (error) {
-            console.log('Error al iniciar sesión', error);
             throw new Error('Error al iniciar sesión');
         }
     }

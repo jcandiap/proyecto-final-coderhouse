@@ -36,7 +36,6 @@ export const sendConfirmationEmail = async (products, nombre, email) => {
         }
         const info = await transport.sendMail(mailerOptions);
     } catch (error) {
-        console.error(error.message);
     }
 }
 
@@ -53,6 +52,5 @@ export const sendNewRegister = async (nombre, email) => {
         }
         const info = await transport.sendMail(mailerOptions);
     } catch (error) {
-        console.error(error.message);
     }
 }

@@ -15,7 +15,6 @@ class ContenedorArchivos {
             await fs.writeFile(this.ruta, JSON.stringify(object));
             return newRegister;
         } catch (error) {
-            console.log(error);
             throw new Error('Error al guardar el registro');
         }
     }
@@ -37,7 +36,6 @@ class ContenedorArchivos {
             const object = JSON.parse(file);
             return object
         } catch (error) {
-            console.log(error);
             throw new Error(`Error al obtener los registros`);
         }
     }

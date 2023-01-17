@@ -15,7 +15,7 @@ class ContenedorSqlite {
             newObject = await this.getById(newObject[0]);
             newObject = newObject[0];
         } catch (error) {
-            console.log('Error al ingresar registro:', error);
+            throw new Error(`Error al guardar el registro`);
         }
         return newObject;
     }
@@ -35,7 +35,6 @@ class ContenedorSqlite {
         try {
             object = await this.db(this.table).select('*');
         } catch (error) {
-            console.log(error);
             throw new Error(`Error al obtener los registros`);
         }
         return object;
@@ -52,7 +51,6 @@ class ContenedorSqlite {
             newObject = await this.getById(registerUpdate.id);
             newObject = newObject[0];
         } catch (error) {
-            console.log(error);
             throw new Error('Error al modificar registro');
         }
         return newObject;

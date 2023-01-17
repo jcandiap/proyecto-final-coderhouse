@@ -14,6 +14,5 @@ export const sendMessageWhatsapp = async (usuario, email) => {
         const { status } = await client.messages.create(options);
         return status;
     } catch (error) {
-        console.error(error);
     }
 }

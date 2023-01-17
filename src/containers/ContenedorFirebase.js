@@ -24,7 +24,6 @@ class ContenedorFirebase {
             newRegister._id = result.id;
             return newRegister;
         } catch (error) {
-            console.log(this.collection, error)
             throw new Error('Error al guardar el registro');
         }
     }
@@ -37,7 +36,6 @@ class ContenedorFirebase {
             objects = result.data();
             objects._id = result.id;
         } catch (error) {
-            console.log(error);
             throw new Error('Error al obtener todos los registros');
         }
         return objects;
@@ -55,7 +53,6 @@ class ContenedorFirebase {
                 objects.push(object);
             });
         } catch (error) {
-            console.log(error);
             throw new Error('Error al obtener todos los registros');
         }
         return objects;
@@ -67,7 +64,6 @@ class ContenedorFirebase {
             const result = await db.collection(this.collection).doc(registerUpdate._id).update(registerUpdate);
             return registerUpdate;
         } catch (error) {
-            console.log(error)
             throw new Error('Error al actualizar el registro');
         }
     }
@@ -78,7 +74,6 @@ class ContenedorFirebase {
             await db.collection(this.collection).doc(id).delete();
             return true;
         } catch (error) {
-            console.log(error)
             throw new Error('Error al eliminar el registro');
         }
     }
