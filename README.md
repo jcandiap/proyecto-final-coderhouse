@@ -20,4 +20,4 @@ Dentro de las pruebas se pudieron ver muchos codigos de error debido a la cantid
 #
 Carro: El tiempo de respuesta medio del [modo fork](https://github.com/jcandiap/proyecto-final-coderhouse/blob/main/car_fork.txt) fue menor que el del [modo cluster](https://github.com/jcandiap/proyecto-final-coderhouse/blob/main/car_cluster.txt) donde igualmente el modo fork pudo procesar exitosamente mayor cantidad de solicitudes en comparación al modo cluster (132 vs 15)
 ##
-Productos:  
+Productos: El [modo cluster](https://github.com/jcandiap/proyecto-final-coderhouse/blob/main/products_cluster.txt) pudo procesar mas solicitudes de forma exitosa a diferencia de el [modo fork](https://github.com/jcandiap/proyecto-final-coderhouse/blob/main/products_fork.txt) y el tiempo de respuesta medio tambien fue mas bajo (2725 vs 2836.2)
