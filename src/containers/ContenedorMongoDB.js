@@ -40,17 +40,17 @@ class ContenedorMongoDB {
     }
 
     async getById(id) {
-        let objects = [];
+        let object = {};
         try {
             const collection = await this.connect();
             const o_id = new mongo.ObjectId(id);
-            objects = await collection.findOne({ _id: o_id });
+            object = await collection.findOne({ _id: o_id });
             await this.disconnect();
         } catch (error) {
             console.log(error);
             throw new Error('Error al obtener todos los registros');
         }
-        return objects;
+        return object;
     }
 
     async getAll() {

@@ -1,11 +1,14 @@
 import express from 'express';
+import CarritoDaoMongoDB from '../dao/carrito/CarritoDaoMongoDB.js';
 import UsuarioDaoMongoDB from '../dao/usuario/UsuarioDaoMongoDB.js';
 import { userLogin, userRegister } from '../middleware/userMiddleware.js';
 import { sendConfirmationEmail, sendNewRegister } from '../notifications/mailer.js';
+import { sendMessageSms } from '../notifications/sms.js';
 import { sendMessageWhatsapp } from '../notifications/whatsapp.js';
 
 const userRouters = express.Router();
 const userManager = new UsuarioDaoMongoDB();
+const carManager = new CarritoDaoMongoDB();
 
 userRouters.post('/login', userLogin, async (req, res) => {
     const user = req.body;
@@ -35,8 +38,30 @@ userRouters.post('/register', userRegister, async (req, res) => {
 
 userRouters.post('/confirmar-compra', async (req, res) => {
     try {
-        await sendConfirmationEmail('josecandiap@gmail.com', null);
-        await sendMessageWhatsapp('+56998938621', req.body || []);
+        const { carId, userId } = req.body;
+        if(!Boolean(carId)) {
+            res.status(400).send({ error: 'Debe ingresar un id de carrito' });
+            return;
+        }
+        let car = await carManager.getById(carId);
+        if( !Boolean(car) ) {
+            res.status(400).send({ error: 'No se encontro el carrito' });
+            return;
+        }
+        if( car.products === undefined || car.products.length === 0 ) {
+            res.status(400).send({ error: 'El carrito no tiene productos' });
+            return;
+        }
+        if( car.userId !== userId || car.status !== 'pending' ) {
+            res.status(400).send({ error: 'No se puede confirmar la compra' });
+            return;
+        }
+        const { numeroTelefono, nombre, email } = await userManager.getById(userId);
+        car.status = 'confirmed';
+        await carManager.updateById(car);
+        await sendConfirmationEmail(car.products, nombre, email);
+        await sendMessageWhatsapp(car.products, nombre, email);
+        await sendMessageSms(numeroTelefono);
         res.status(200).send({ message: 'Email enviado con exito '});
     } catch (error) {
         res.status(400).send({ error: error.message });

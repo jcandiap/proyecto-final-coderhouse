@@ -10,7 +10,12 @@ const carRoutes = express.Router();
 const carManager = new CarritoDaoMongoDB();
 
 carRoutes.post('/', async (req, res) => {
-    const car = new Car({});
+    const userId = req.body.userId;
+    if( !Boolean(userId) ) {
+        res.status(400).send({ error: 'Error al ingresar nuevo carrito' });
+        return;
+    }
+    const car = new Car(userId);
     try {
         const newCar = await carManager.save(car);
         !!newCar ? res.status(200).send(newCar) : res.status(400).send({ error: 'Error al ingresar nuevo carrito' });
