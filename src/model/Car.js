@@ -1,7 +1,9 @@
 class Car {
 
-    constructor(object) {
+    constructor(userId) {
         this.products = [];
+        this.status = 'pending';
+        this.userId = userId;
     }
 
 }
