@@ -6,7 +6,7 @@
   "scripts": {
     "test": "NODE_OPTIONS=--experimental-vm-modules jest",
     "start": "node src/app.js --modo=CLUSTER",
-    "dev": "node src/app.js --modo=CLUSTER --WATCH"
+    "dev": "node src/app.js --modo=CLUSTER --watch"
   },
   "keywords": [],
   "author": "José Candia",
