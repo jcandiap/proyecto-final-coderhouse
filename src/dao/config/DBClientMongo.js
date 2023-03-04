@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import { MongoClient } from 'mongodb';
+import { errorLogger } from "../../config/logger.js";
 
 class DBClientMongo {
 
@@ -11,7 +12,8 @@ class DBClientMongo {
             const database = client.db(process.env.MONGO_DB);
             const collection = database.collection(this.collection);
             return collection;
-        } catch (error) {
+        } catch ({ message }) {
+            errorLogger.log(`Error connecting database [${ message }]`);
             return null;
         }
     }
