@@ -1,8 +1,11 @@
 import express from 'express';
-import { saveProduct } from '../controllers/ProductController.js';
+import { getProduct, getProducts, saveProduct } from '../controllers/ProductController.js';
+import { validateAdministrator, validateGetProduct, validateProduct } from '../middleware/productMiddleware.js';
 
 const productRoutes = express.Router();
 
-productRoutes.post('/', [validarAdministrador, validarProducto], saveProduct);
+productRoutes.post('/', [validateAdministrator, validateProduct], saveProduct);
+productRoutes.get('/:id', [validateGetProduct], getProduct);
+productRoutes.get('/', getProducts);
 
 export default productRoutes;
