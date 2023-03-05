@@ -65,7 +65,14 @@ export async function updateProduct(req, res) {
 
 export async function deleteProduct(req, res) {
     try {
-        
+        logger.info('start method [delete product]');
+        const productFound = await productContainer.get(req.params.id);
+        if( !productFound ) {
+            res.status(400).send({ status: 'error', message: 'Product not found' });
+            return;
+        }
+        await productContainer.delete(req.params.id);
+        res.status(200).send({ status: 'ok', message: 'Product deleted successfully' });
     } catch ({ message }) {
         errorLogger.error(message);
         res.status(400).send({ status: 'error', message });
