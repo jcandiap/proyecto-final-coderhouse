@@ -1,35 +1,54 @@
-export const userRegister = async (req, res, next) => {
-    const { email, password, nombre, direccion, edad, numeroTelefono, avatar } = req.body;
+import bcrypt from 'bcrypt';
+
+export async function userRegister (req, res, next) {
+    const { email, password, name, address, age, phoneNumber, avatar } = req.body;
     if( !Boolean(email) ) {
-        res.status(400).send({ error: 'Debe ingresar un email' });
+        res.status(400).send({ status: 'error', message: 'You must enter an email' });
         return;
     }
     if( !Boolean(password) ) {
-        res.status(400).send({ error: 'Debe ingresar una contraseña' });
+        res.status(400).send({ status: 'error', message: 'You must enter a password' });
         return;
     }
-    if( !Boolean(nombre) ) {
-        res.status(400).send({ error: 'Debe ingresar un nombre' });
+    if( !Boolean(name) ) {
+        res.status(400).send({ status: 'error', message: 'ou must enter a name' });
         return;
     }
-    if( !Boolean(direccion) ) {
-        res.status(400).send({ error: 'Debe ingresar una direccion' });
+    if( !Boolean(address) ) {
+        res.status(400).send({ status: 'error', message: 'You must enter an address' });
         return;
     }
-    if( !Boolean(edad) ) {
-        res.status(400).send({ error: 'Debe ingresar una edad' });
+    if( !Boolean(age) ) {
+        res.status(400).send({ status: 'error', message: 'You must enter an age' });
         return;
     }
-    if( !Boolean(numeroTelefono) ) {
-        res.status(400).send({ error: 'Debe ingresar un numero de telefono' });
+    if( !Boolean(phoneNumber) ) {
+        res.status(400).send({ status: 'error', message: 'You must enter a phone number' });
         return;
     }
     if( !Boolean(avatar) ) {
-        res.status(400).send({ error: 'Debe ingresar un avatar' });
+        res.status(400).send({ status: 'error', message: 'You must enter an avatar' });
+        return;
+    }
+    if( !Boolean(age) ) {
+        res.status(400).send({ status: 'error', message: 'You must enter an age' });
+    }
+    next();
+}
+
+export async function validateConfirmPassword(req, res, next) {
+    const { password, confirmPassword } = req.body;
+    if( password !== confirmPassword ) {
+        res.status(400).send({ error: 'The passwords entered must be the same' });
         return;
     }
     next();
-};
+}
+
+export async function encryptPassword(req, res, next) {
+    req.body.password = await bcrypt.hash(req.body.password, 10);
+    next();
+}
 
 export const userLogin = async (req, res, next) => {
     const { email, password } = req.body;
