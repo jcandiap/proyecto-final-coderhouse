@@ -20,7 +20,7 @@ export function validateAdministrator(req, res, next) {
     }
 }
 
-export function validateGetProduct(req, res, next) {
+export function validateIdProduct(req, res, next) {
     if( !req.params.id ) {
         res.send({ error: -1, description: 'ID not specificated' });
     } else {
