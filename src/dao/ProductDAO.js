@@ -63,6 +63,17 @@ class ProductsDAO extends BaseDAO {
         }
     }
 
+    async getByCategory(category) {
+        try {
+            const collection = await this.connect();
+            const products = await collection.find({ category }).toArray();
+            await this.disconnect();
+            return products;
+        } catch (error) {
+            throw new Error(`Error getting products [${ error?.message }]`)
+        }
+    }
+
 }
 
 export default ProductsDAO;

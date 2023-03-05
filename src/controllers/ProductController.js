@@ -78,3 +78,16 @@ export async function deleteProduct(req, res) {
         res.status(400).send({ status: 'error', message });
     }
 }
+
+export async function getByCategory(req, res) {
+    try {
+        logger.info('start method [get products by category]');
+        const products = await productContainer.getByCategory(req.params.category);
+        const returnedProducts = [];
+        products.forEach(product => returnedProducts.push(new ReturnInsertedProductDTO(product)));
+        res.status(200).send({ status: 'ok', message: 'Obtained products', data: returnedProducts });
+    } catch ({ message }) {
+        errorLogger.error(message);
+        res.status(400).send({ status: 'error', message });
+    }
+}
