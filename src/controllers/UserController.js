@@ -36,7 +36,7 @@ export async function login(req, res) {
         if( passwordMatch ) {
             res.status(200).send({ status: 'ok', message: 'User logged successfully', data: new ReturnUserDTO(userFound) })
         } else {
-            res.status(400).send({ status: 'error', message: 'Loging failed' });
+            res.status(400).send({ status: 'error', message: 'Login failed' });
         }
     } catch (error) {
         
