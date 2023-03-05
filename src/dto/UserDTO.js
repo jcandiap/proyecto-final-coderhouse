@@ -5,9 +5,11 @@ export class RegisterUserDTO {
         this.lastName = data?.lastName || '';
         this.avatar = data?.avatar || '';
         this.phoneNumber = data?.phoneNumber || '';
+        this.address = data?.address || '';
         this.country = data?.country || '';
         this.password = data?.password || '';
-        this.confirmPasword = data?.confirmPasword || '';
+        this.age = data?.age || 0;
+        this.status = 'active';
         this.createdAt = new Date().getTime();
     }
 }
