@@ -49,8 +49,23 @@ export async function getProducts(req, res) {
 export async function updateProduct(req, res) {
     try {
         logger.info('start method [update product]');
-        const productFound = await productContainer.get();
-        const product = new UpdateProductDTO(req.body)
+        const productFound = await productContainer.get(req.params.id);
+        if( !productFound ) {
+            res.status(400).send({ status: 'error', message: 'Product not found' });
+            return;
+        }
+        const product = new UpdateProductDTO(req.body, productFound);
+        await productContainer.update(product);
+        res.status(200).send({ status: 'ok', message: 'Product updated successfully', data: product });
+    } catch ({ message }) {
+        errorLogger.log(message);
+        res.status(400).send({ status: 'error', message });
+    }
+}
+
+export async function deleteProduct(req, res) {
+    try {
+        
     } catch ({ message }) {
         errorLogger.log(message);
         res.status(400).send({ status: 'error', message });
