@@ -7,6 +7,7 @@ export class InsertProductDTO {
         this.thumbnail = data?.thumbnail || '';
         this.stock = data?.stock || 1;
         this.timestamp = new Date().getTime();
+        this.category = data?.category || 'generic';
         this.status = 'active';
     }
 
@@ -25,6 +26,7 @@ export class ReturnInsertedProductDTO {
         this.title = data?.title || '';
         this.price = data?.price || '';
         this.thumbnail = data?.thumbnail || '';
+        this.category = data?.category || '';
     }
 }
 
@@ -38,6 +40,7 @@ export class ReturnProductDTO {
         this.stock = data?.stock || 1;
         this.timestamp = data?.timestamp || 0;
         this.status = data?.status || '';
+        this.category = data?.category || '';
     }
 }
 
@@ -49,5 +52,6 @@ export class UpdateProductDTO {
         this.price = !!data?.price ? data.price : productFound?.price;
         this.thumbnail = !!data?.thumbnail ? data.thumbnail : productFound?.thumbnail;
         this.stock = !!data?.stock ? data.stock : productFound?.stock;
+        this.category = !!data?.category ? data.category : productFound?.category;
     }
 }
