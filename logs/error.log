@@ -6,3 +6,5 @@
 [2023-03-05T12:46:20.501] [ERROR] error - Error getting products [Argument passed in must be a string of 12 bytes or a string of 24 hex characters or an integer]
 [2023-03-05T12:47:05.559] [ERROR] error - Error getting products [Update document requires atomic operators]
 [2023-03-05T13:17:57.669] [ERROR] error - Error getting product [Argument passed in must be a string of 12 bytes or a string of 24 hex characters or an integer]
+[2023-03-05T16:46:40.424] [ERROR] error - logger is not defined
+[2023-03-05T16:47:30.819] [ERROR] error - Error saving the user [this.collection is not a function]
