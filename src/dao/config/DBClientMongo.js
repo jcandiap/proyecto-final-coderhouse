@@ -13,7 +13,7 @@ class DBClientMongo {
             const collection = database.collection(this.collection);
             return collection;
         } catch ({ message }) {
-            errorLogger.log(`Error connecting database [${ message }]`);
+            errorLogger.error(`Error connecting database [${ message }]`);
             return null;
         }
     }
