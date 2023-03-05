@@ -4,8 +4,9 @@ import userRouters from './routes/user.js';
 import dotenv from 'dotenv';
 import yargs from 'yargs/yargs';
 import cluster from 'cluster';
-import { configureLogger, errorLogger, logger, warnLogger } from './config/logger.js';
+import { configureLogger, logger, warnLogger } from './config/logger.js';
 import os from 'os';
+import { configureMessageSocket } from './websocket/messageSocket.js';
 
 dotenv.config();
 configureLogger();
@@ -20,6 +21,7 @@ const argv = yargs(process.argv.slice(1))
 const SERVER_TYPE = argv.modo || 'FORK';
 
 const app = express();
+let server = null;
 
 const PORT = process.env.PORT || 8080;
 
@@ -29,12 +31,13 @@ if( SERVER_TYPE !== 'FORK' ) {
             cluster.fork()
         };
     } else {
-        app.listen(PORT, () => logger.info(`Servidor iniciado en mondo ${ SERVER_TYPE } en el puerto ${ PORT } y el proceso ${ process.pid }`));
+        server = app.listen(PORT, () => logger.info(`Servidor iniciado en mondo ${ SERVER_TYPE } en el puerto ${ PORT } y el proceso ${ process.pid }`));
     }
 } else {
-    app.listen(PORT, () => logger.info(`Servidor iniciado en mondo ${ SERVER_TYPE } en el puerto ${ PORT } y el proceso ${ process.pid }`));
+    server = app.listen(PORT, () => logger.info(`Servidor iniciado en mondo ${ SERVER_TYPE } en el puerto ${ PORT } y el proceso ${ process.pid }`));
 }
 
+configureMessageSocket(server);
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
