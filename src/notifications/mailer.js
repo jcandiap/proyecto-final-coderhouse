@@ -1,12 +1,13 @@
 import nodemailer from 'nodemailer';
 import { readFileSync } from 'node:fs'
+import { errorLogger, logger } from '../config/logger.js';
 
 const transport = nodemailer.createTransport({
     host: 'smtp.ethereal.email',
     port: 587,
     auth: {
-        user: 'shirley.douglas@ethereal.email',
-        pass: 'XCAuNyP6MJm1s7mnQ1'
+        user: 'cole.barrows@ethereal.email',
+        pass: 'NMbJJW8amsnr2CyP9t'
     }
 });
 
@@ -46,11 +47,13 @@ export const sendNewRegister = async (nombre, email) => {
         htmlFormat = htmlFormat.replace(/%USER_EMAIL%/g, email);
         const mailerOptions = {
             from: 'Ecommerce Coderhouse',
-            to: process.env.ADMIN_EMAIL,
+            to: email,
             subject: 'Nuevo registro de usuario',
             html: htmlFormat
         }
-        const info = await transport.sendMail(mailerOptions);
-    } catch (error) {
+        await transport.sendMail(mailerOptions);
+    } catch ({ message }) {
+        errorLogger.error(message);
+        throw new Error(`Error sending email [${ message }]`);
     }
 }

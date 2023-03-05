@@ -3,6 +3,7 @@ import { errorLogger, logger } from '../config/logger.js';
 import UserDAO from '../dao/UserDAO.js';
 import { RegisterUserDTO, ReturnUserDTO } from '../dto/UserDTO.js';
 import bcrypt from 'bcrypt';
+import { sendNewRegister } from '../notifications/mailer.js';
 
 const userContainer = new UserDAO();
 
@@ -16,6 +17,7 @@ export async function register(req, res) {
             return;
         }
         await userContainer.save(registerUser);
+        await sendNewRegister(registerUser.name, registerUser.email);
         res.status(200).send({ status: 'ok', message: 'User created', data: new ReturnUserDTO(registerUser) });
     } catch ({ message }) {
         errorLogger.error(message);
