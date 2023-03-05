@@ -1,0 +1,7 @@
+[2023-03-05T12:36:32.761] [ERROR] error - Error getting product [Argument passed in must be a string of 12 bytes or a string of 24 hex characters or an integer]
+[2023-03-05T12:42:43.720] [ERROR] error - Error getting product [Argument passed in must be a string of 12 bytes or a string of 24 hex characters or an integer]
+[2023-03-05T12:43:17.156] [ERROR] error - Error getting product [Argument passed in must be a string of 12 bytes or a string of 24 hex characters or an integer]
+[2023-03-05T12:43:58.640] [ERROR] error - Error getting products [Argument passed in must be a string of 12 bytes or a string of 24 hex characters or an integer]
+[2023-03-05T12:45:43.428] [ERROR] error - Error getting products [Argument passed in must be a string of 12 bytes or a string of 24 hex characters or an integer]
+[2023-03-05T12:46:20.501] [ERROR] error - Error getting products [Argument passed in must be a string of 12 bytes or a string of 24 hex characters or an integer]
+[2023-03-05T12:47:05.559] [ERROR] error - Error getting products [Update document requires atomic operators]
