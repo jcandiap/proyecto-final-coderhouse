@@ -29,6 +29,17 @@ class CarDAO extends BaseDAO {
             throw new Error(`Error getting the car [${ error?.message }]`);
         }
     }
+
+    async update(object) {
+        try {
+            const collection = await this.connect();
+            const register = await collection.findOneAndUpdate({ _id: object._id }, { $set: object });
+            await this.disconnect();
+            return register;
+        } catch (error) {
+            throw new Error(`Error updating the car [${ error?.message }]`)
+        }
+    }
 }
 
 export default CarDAO;
