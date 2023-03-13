@@ -7,6 +7,7 @@ import cluster from 'cluster';
 import { configureLogger, logger, warnLogger } from './config/logger.js';
 import os from 'os';
 import { configureMessageSocket } from './websocket/messageSocket.js';
+import carRoutes from './routes/car.js';
 
 dotenv.config();
 configureLogger();
@@ -44,6 +45,7 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use('/api/product', productRoutes);
 app.use('/api/user', userRouters);
+app.use('/api/car', carRoutes);
 
 app.use((req, res) => {
     warnLogger.warn(`Intentando ingresar una runa no implementada ${ req.baseUrl }${ req.url } método ${ req.method }`);
