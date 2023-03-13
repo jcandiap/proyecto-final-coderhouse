@@ -4,7 +4,7 @@ export function validateProduct(req, res, next) {
     const product = new InsertProductDTO(req.body);
     if(!product.validateData()) {
         warnLogger.warn('Datos no completados al ingresar producto');
-        res.status(400).send({ error: 'Debe ingresar todos los datos para insertar un producto' });
+        res.status(400).send({ error: -1, description: 'Debe ingresar todos los datos para insertar un producto' });
     } else {
         next();
     }
