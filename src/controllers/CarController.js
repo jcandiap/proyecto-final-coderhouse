@@ -1,26 +1,65 @@
 import { errorLogger } from "../config/logger.js";
 import CarDAO from "../dao/CarDAO.js";
 import { GettingCarDTO } from "../dto/CarDTO.js";
+import jwt from 'jsonwebtoken';
+import ProductsDAO from "../dao/ProductDAO.js";
+import { ReturnProductToCar } from "../dto/ProductDTO.js";
 
 const carContainer = new CarDAO();
+const productContainer = new ProductsDAO();
 
 export async function getCarInfo(req, res) {
     try {
-        const { userId, carId } = req.body;
-        const car = await carContainer.getByUser(carId, userId);
+        const { authorization } = req.headers;
+        const { id } = req.params;
+        const token = jwt.verify(authorization.split(' ')[2], process.env.SECRET);
+        const car = await carContainer.getByUser(id, token.userId);
         if( !car ) {
             res.status(400).send({ status: 'error', message: 'Car not found' });
             return;
         }
         res.status(200).send({ status: 'ok', message: 'Car obtained', data: new GettingCarDTO(car) });
-    } catch (error) {
+    } catch ({ message }) {
         errorLogger.error(message);
         res.status(400).send({ status: 'error', message });
     }
 }
 
 export async function addProductToCar(req, res) {
-
+    try {
+        const { authorization } = req.headers;
+        const { carId, productId, amount } = req.body;
+        const token = jwt.verify(authorization.split(' ')[2], process.env.SECRET);
+        const car = await carContainer.getByUser(carId, token.userId);
+        if( !car ) {
+            res.status(400).send({ status: 'error', message: 'Car not found' });
+            return;
+        }
+        const product = await productContainer.get(productId);
+        if( !product ) {
+            res.status(400).send({ status: 'error', message: 'Product not found' });
+            return;
+        }
+        if( product.stock == 0 || product.stock < amount ) {
+            res.status(400).send({ status: 'error', message: 'There is no stock for the product' });
+            return;
+        }
+        const productInCar = car.products.find(findProduct => findProduct.id.toString() === productId);
+        if( !productInCar ) {
+            car.products.push(new ReturnProductToCar(product, amount));
+        } else {
+            car.products.map(mapProduct => {
+                if( mapProduct.id.toString() === productId ) {
+                    mapProduct.amount += amount;
+                }
+            })
+        }
+        await carContainer.update(car);
+        res.status(200).send({ status: 'ok', message: 'Product added to car', data: new GettingCarDTO(car) });
+    } catch ({ message }) {
+        errorLogger.error(message);
+        res.status(400).send({ status: 'error', message });
+    }
 }
 
 export async function deleteProduct(req, res) {
