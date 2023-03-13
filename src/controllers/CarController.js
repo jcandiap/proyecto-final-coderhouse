@@ -62,14 +62,72 @@ export async function addProductToCar(req, res) {
     }
 }
 
-export async function deleteProduct(req, res) {
-
+export async function deleteSingleProduct(req, res) {
+    try {
+        const { authorization } = req.headers;
+        const { carId, productId } = req.body;
+        const token = jwt.verify(authorization.split(' ')[2], process.env.SECRET);
+        const car = await carContainer.getByUser(carId, token.userId);
+        if( !car ) {
+            res.status(400).send({ status: 'error', message: 'Car not found' });
+            return;
+        }
+        car.products.map(product => {
+            if( product.id.toString() === productId ) {
+                if( product.amount === 1 ) {
+                    car.products = car.products.filter(prod => prod !== product);
+                } else {
+                    product.amount -= 1;
+                }
+            }
+        })
+        await carContainer.update(car);
+        res.status(200).send({ status: 'ok', message: 'Product deleted to car', data: new GettingCarDTO(car) });
+    } catch ({ message }) {
+        errorLogger.error(message);
+        res.status(400).send({ status: 'error', message });
+    }
 }
 
-export async function deleteSingleProduct(req, res) {
-
+export async function deleteProduct(req, res) {
+    try {
+        const { authorization } = req.headers;
+        const { carId, productId } = req.body;
+        const token = jwt.verify(authorization.split(' ')[2], process.env.SECRET);
+        const car = await carContainer.getByUser(carId, token.userId);
+        if( !car ) {
+            res.status(400).send({ status: 'error', message: 'Car not found' });
+            return;
+        }
+        car.products.map(product => {
+            if( product.id.toString() === productId ) {
+                car.products = car.products.filter(prod => prod !== product);
+            }
+        });
+        await carContainer.update(car);
+        res.status(200).send({ status: 'ok', message: 'Products deleted to car', data: new GettingCarDTO(car) });
+    } catch ({ message }) {
+        errorLogger.error(message);
+        res.status(400).send({ status: 'error', message });
+    }
 }
 
 export async function passCarToOrder(req, res) {
-
+    try {
+        const { authorization } = req.headers;
+        const { carId } = req.body;
+        const token = jwt.verify(authorization.split(' ')[2], process.env.SECRET);
+        const car = await carContainer.getByUser(carId, token.userId);
+        if( !car ) {
+            res.status(400).send({ status: 'error', message: 'Car not found' });
+            return;
+        }
+        if( car.products.length < 1 ) {
+            res.status(400).send({ status: 'error', message: 'Car without elements to buy' });
+            return;
+        }
+    } catch ({ message }) {
+        errorLogger.error(message);
+        res.status(400).send({ status: 'error', message });
+    }
 }
