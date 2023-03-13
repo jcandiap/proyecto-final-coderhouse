@@ -10,8 +10,9 @@ class UserDAO extends BaseDAO {
     async save(object) {
         try {
             const collection = await this.connect();
-            await collection.insertOne(object);
+            const insertedId = await collection.insertOne(object);
             await this.disconnect();
+            return insertedId;
         } catch ({ message }) {
             throw new Error(`Error saving the user [${ message }]`)
         }
