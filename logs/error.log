@@ -8,3 +8,4 @@
 [2023-03-05T13:17:57.669] [ERROR] error - Error getting product [Argument passed in must be a string of 12 bytes or a string of 24 hex characters or an integer]
 [2023-03-05T16:46:40.424] [ERROR] error - logger is not defined
 [2023-03-05T16:47:30.819] [ERROR] error - Error saving the user [this.collection is not a function]
+[2023-03-12T17:21:23.095] [ERROR] error - Argument passed in must be a string of 12 bytes or a string of 24 hex characters or an integer

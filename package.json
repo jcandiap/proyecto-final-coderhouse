@@ -6,7 +6,7 @@
   "scripts": {
     "test": "NODE_OPTIONS=--experimental-vm-modules jest",
     "start": "node src/app.js --modo=FORK",
-    "dev": "nodemon src/app.js --modo=FORK --watch"
+    "dev": "nodemon src/app.js --modo=FORK"
   },
   "keywords": [],
   "author": "José Candia",
