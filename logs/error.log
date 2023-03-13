@@ -19,3 +19,5 @@
 [2023-03-13T11:35:32.963] [ERROR] error - Error updating the car [Update document requires atomic operators]
 [2023-03-13T11:36:40.195] [ERROR] error - Error updating the car [register is not a function]
 [2023-03-13T11:54:22.361] [ERROR] error - Cannot read properties of undefined (reading 'toString')
+[2023-03-13T15:29:13.113] [ERROR] error - authorization is not defined
+[2023-03-13T15:29:28.206] [ERROR] error - authorization is not defined

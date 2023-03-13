@@ -3,3 +3,4 @@
 [2023-03-13T09:35:01.989] [WARN] warn - Intentando ingresar una runa no implementada /api/car/640e34e243ecd95bf9e009af método GET
 [2023-03-13T11:22:03.493] [WARN] warn - Intentando ingresar una runa no implementada /api/carrito/addProductToCar método POST
 [2023-03-13T11:22:11.010] [WARN] warn - Intentando ingresar una runa no implementada /api/car/addProductToCar método POST
+[2023-03-13T15:48:04.353] [WARN] warn - Intentando ingresar una runa no implementada /api/car/ método POST
