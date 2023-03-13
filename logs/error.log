@@ -9,3 +9,13 @@
 [2023-03-05T16:46:40.424] [ERROR] error - logger is not defined
 [2023-03-05T16:47:30.819] [ERROR] error - Error saving the user [this.collection is not a function]
 [2023-03-12T17:21:23.095] [ERROR] error - Argument passed in must be a string of 12 bytes or a string of 24 hex characters or an integer
+[2023-03-13T09:20:02.120] [ERROR] error - Error getting the car [Argument passed in must be a string of 12 bytes or a string of 24 hex characters or an integer]
+[2023-03-13T09:24:42.228] [ERROR] error - Error getting the car [Argument passed in must be a string of 12 bytes or a string of 24 hex characters or an integer]
+[2023-03-13T09:24:51.723] [ERROR] error - invalid signature
+[2023-03-13T09:29:09.260] [ERROR] error - Error getting the car [Argument passed in must be a string of 12 bytes or a string of 24 hex characters or an integer]
+[2023-03-13T11:32:26.497] [ERROR] error - Error updating the car [Update document requires atomic operators]
+[2023-03-13T11:33:01.107] [ERROR] error - Error updating the car [Update document requires atomic operators]
+[2023-03-13T11:33:34.451] [ERROR] error - Error updating the car [Update document requires atomic operators]
+[2023-03-13T11:35:32.963] [ERROR] error - Error updating the car [Update document requires atomic operators]
+[2023-03-13T11:36:40.195] [ERROR] error - Error updating the car [register is not a function]
+[2023-03-13T11:54:22.361] [ERROR] error - Cannot read properties of undefined (reading 'toString')
