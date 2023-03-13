@@ -55,3 +55,14 @@ export class UpdateProductDTO {
         this.category = !!data?.category ? data.category : productFound?.category;
     }
 }
+
+export class ReturnProductToCar {
+    constructor(data, amount) {
+        this.id = data?._id || '';
+        this.title = data?.title || '';
+        this.price = data?.price || '';
+        this.thumbnail = data?.thumbnail || '';
+        this.category = data?.category || '';
+        this.amount = amount || 1;
+    }
+}
