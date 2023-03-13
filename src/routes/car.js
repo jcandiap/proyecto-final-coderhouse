@@ -4,7 +4,7 @@ import { validateAddingProduct, validateGettingCar } from '../middleware/carMidd
 
 const carRoutes = express.Router();
 
-carRoutes.post('/get-car', [validateGettingCar], getCarInfo);
+carRoutes.get('/:id', [validateGettingCar], getCarInfo);
 carRoutes.post('/add-product', [validateAddingProduct], addProductToCar);
 carRoutes.post('/delete-product', deleteSingleProduct);
 carRoutes.post('/delete-products', deleteProduct);
