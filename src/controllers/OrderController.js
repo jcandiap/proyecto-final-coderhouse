@@ -82,3 +82,20 @@ export async function confirmOrder(req, res) {
         res.status(400).send({ status: 'error', message })
     }
 }
+
+export async function getOrders(req, res) {
+    try {
+        const { authorization } = req.headers;
+        const { userId } = jwt.verify(authorization.split(' ')[2], process.env.SECRET);
+        const orders = await orderContainer.getAllByUser(userId);
+        if( !orders ) {
+            res.status(400).send({ status: 'error', message: 'Orders not found' });
+            return;
+        }
+        const returnedOrders = orders.map(order => new OrderDTO(order));
+        res.status(200).send({ status: 'ok', message: 'Orders getted successfully', data: returnedOrders });
+    } catch ({ message }) {
+        errorLogger.error(message);
+        res.status(400).send({ status: 'error', message })
+    }
+}

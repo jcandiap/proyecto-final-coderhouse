@@ -52,6 +52,17 @@ class OrderDAO extends BaseDAO {
         }
     }
 
+    async getAllByUser(userId) {
+        try {
+            const collection = await this.connect();
+            const orders = await collection.find({ userId }).toArray();
+            await this.disconnect();
+            return orders;
+        } catch ({ message }) {
+            throw new Error(`Error getting the orders [${ message }]`)
+        }
+    }
+
 }
 
 export default OrderDAO;

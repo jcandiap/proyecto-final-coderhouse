@@ -25,3 +25,5 @@
 [2023-03-14T11:14:44.163] [ERROR] error - carContainer is not defined
 [2023-03-14T11:15:40.131] [ERROR] error - userId is not defined
 [2023-03-14T16:06:38.448] [ERROR] error - Error updating the order [Modifiers operate on fields but we found type string instead. For example: {$mod: {<field>: ...}} not {$set: "test_payment"}]
+[2023-03-14T16:21:56.453] [ERROR] error - orders.map is not a function
+[2023-03-14T16:22:25.975] [ERROR] error - orders.map is not a function
