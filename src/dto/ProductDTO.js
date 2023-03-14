@@ -66,3 +66,13 @@ export class ReturnProductToCar {
         this.amount = amount || 1;
     }
 }
+
+export class ProductOrderDetailDTO {
+    constructor(data) {
+        this.id = data?.id || '';
+        this.title = data?.title || '';
+        this.price = data?.price || 0;
+        this.amount = data?.amount || 0;
+        this.total = data?.total || 0;
+    }
+}
