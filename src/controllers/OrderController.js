@@ -1,13 +1,16 @@
 import jwt from 'jsonwebtoken';
 
-import { errorLogger } from "../config/logger.js";
+import { errorLogger, logger } from "../config/logger.js";
 import CarDAO from "../dao/CarDAO.js";
 import OrderDAO from '../dao/OrderDAO.js';
+import UserDAO from '../dao/UserDAO.js';
 import { OrderDTO } from '../dto/OrderDTO.js';
 import { ProductOrderDetailDTO } from '../dto/ProductDTO.js';
+import { sendConfirmationEmail } from '../notifications/mailer.js';
 
 const carContainer = new CarDAO();
 const orderContainer = new OrderDAO();
+const userContainer = new UserDAO();
 
 export async function generateOrder(req, res) {
     try {
@@ -76,9 +79,11 @@ export async function confirmOrder(req, res) {
             res.status(400).send({ status: 'error', message: 'Order not found' });
             return;
         }
+        const { name, email } = userContainer.getById(userId);
         order.paymentId = paymentId;
         order.status = 'paied';
         await orderContainer.update(order);
+        sendConfirmationEmail(order.orderDetail, name, email);
         res.status(200).send({ status: 'ok', message: 'Order paied successfully' });
     } catch ({ message }) {
         errorLogger.error(message);

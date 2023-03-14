@@ -1,3 +1,4 @@
+import { mongo } from "mongoose";
 import BaseDAO from "./config/BaseDAO.js";
 
 class UserDAO extends BaseDAO {
@@ -26,6 +27,17 @@ class UserDAO extends BaseDAO {
         try {
             const collection = await this.connect();
             const user = await collection.findOne({ email });
+            await this.disconnect();
+            return user;
+        } catch ({ message }) {
+            throw new Error(`Error getting user [${ message }]`);
+        }
+    }
+
+    async getById(id) {
+        try {
+            const collection = await this.connect();
+            const user = await collection.findOne({ _id: new mongo.ObjectId(id.trim()) });
             await this.disconnect();
             return user;
         } catch ({ message }) {

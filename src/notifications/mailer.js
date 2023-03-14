@@ -21,8 +21,10 @@ export const sendConfirmationEmail = async (products, nombre, email) => {
             products.map(product => {
                 productsFormat = `<tr>
                     <td>${ products.filter(p => product.id === p.id).length }</td>
-                    <td>${ product.description }</td>
+                    <td>${ product.title }</td>
                     <td>$${ product.price }</td>
+                    <td>${ product.amount }</td>
+                    <td>${ product.total }</td>
                 <tr>`;
             }); 
             htmlFormat = htmlFormat.replace(/%PRODUCTS%/g, productsFormat);
@@ -36,7 +38,8 @@ export const sendConfirmationEmail = async (products, nombre, email) => {
             html: htmlFormat
         }
         const info = await transport.sendMail(mailerOptions);
-    } catch (error) {
+    } catch ({ message }) {
+        errorLogger.error(`Error sending email [${ message }]`);
     }
 }
 
