@@ -1,4 +1,4 @@
-import { errorLogger } from "../config/logger.js";
+import { errorLogger, logger } from "../config/logger.js";
 import CarDAO from "../dao/CarDAO.js";
 import { GettingCarDTO } from "../dto/CarDTO.js";
 import jwt from 'jsonwebtoken';
@@ -10,6 +10,7 @@ const productContainer = new ProductsDAO();
 
 export async function getCarInfo(req, res) {
     try {
+        logger.info('start method [get car info]');
         const { authorization } = req.headers;
         const { id } = req.params;
         const token = jwt.verify(authorization.split(' ')[2], process.env.SECRET);
@@ -27,6 +28,7 @@ export async function getCarInfo(req, res) {
 
 export async function addProductToCar(req, res) {
     try {
+        logger.info('start method [add product to car]');
         const { authorization } = req.headers;
         const { carId, productId, amount } = req.body;
         const token = jwt.verify(authorization.split(' ')[2], process.env.SECRET);
@@ -64,6 +66,7 @@ export async function addProductToCar(req, res) {
 
 export async function deleteSingleProduct(req, res) {
     try {
+        logger.info('start method [delete single product]');
         const { authorization } = req.headers;
         const { carId, productId } = req.body;
         const token = jwt.verify(authorization.split(' ')[2], process.env.SECRET);
@@ -91,6 +94,7 @@ export async function deleteSingleProduct(req, res) {
 
 export async function deleteProduct(req, res) {
     try {
+        logger.info('start method [delete product]');
         const { authorization } = req.headers;
         const { carId, productId } = req.body;
         const token = jwt.verify(authorization.split(' ')[2], process.env.SECRET);

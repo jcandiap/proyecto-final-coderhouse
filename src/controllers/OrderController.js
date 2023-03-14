@@ -11,6 +11,7 @@ const orderContainer = new OrderDAO();
 
 export async function generateOrder(req, res) {
     try {
+        logger.info('start method [generate order]');
         const { authorization } = req.headers;
         const { carId } = req.body;
         const { userId } = jwt.verify(authorization.split(' ')[2], process.env.SECRET);
@@ -48,6 +49,7 @@ export async function generateOrder(req, res) {
 
 export async function getOrderDetail(req, res) {
     try {
+        logger.info('start method [get order detail]');
         const { authorization } = req.headers;
         const { id } = req.params;
         const { userId } = jwt.verify(authorization.split(' ')[2], process.env.SECRET);
@@ -65,6 +67,7 @@ export async function getOrderDetail(req, res) {
 
 export async function confirmOrder(req, res) {
     try {
+        logger.info('start method [confirm order]');
         const { authorization } = req.headers;
         const { orderId, paymentId } = req.body;
         const { userId } = jwt.verify(authorization.split(' ')[2], process.env.SECRET);
@@ -85,6 +88,7 @@ export async function confirmOrder(req, res) {
 
 export async function getOrders(req, res) {
     try {
+        logger.info('start method [get orders]');
         const { authorization } = req.headers;
         const { userId } = jwt.verify(authorization.split(' ')[2], process.env.SECRET);
         const orders = await orderContainer.getAllByUser(userId);
