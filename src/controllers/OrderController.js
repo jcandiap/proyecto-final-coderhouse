@@ -57,8 +57,28 @@ export async function getOrderDetail(req, res) {
             return;
         }
         res.status(200).send({ status: 'ok', message: 'Order getted successfully', data: new OrderDTO(order) });
-    } catch (error) {
+    } catch ({ message }) {
         errorLogger.error(message);
         res.status(400).send({ status: 'error', message });
+    }
+}
+
+export async function confirmOrder(req, res) {
+    try {
+        const { authorization } = req.headers;
+        const { orderId, paymentId } = req.body;
+        const { userId } = jwt.verify(authorization.split(' ')[2], process.env.SECRET);
+        const order = await orderContainer.getUnpaidOrder(orderId, userId);
+        if( !order ) {
+            res.status(400).send({ status: 'error', message: 'Order not found' });
+            return;
+        }
+        order.paymentId = paymentId;
+        order.status = 'paied';
+        await orderContainer.update(order);
+        res.status(200).send({ status: 'ok', message: 'Order paied successfully' });
+    } catch ({ message }) {
+        errorLogger.error(message);
+        res.status(400).send({ status: 'error', message })
     }
 }

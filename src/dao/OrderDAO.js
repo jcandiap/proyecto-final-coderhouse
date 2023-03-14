@@ -30,6 +30,28 @@ class OrderDAO extends BaseDAO {
         }
     }
 
+    async getUnpaidOrder(orderId, userId) {
+        try {
+            const collection = await this.connect();
+            const order = collection.findOne({ status: 'generated', userId, _id: new mongo.ObjectId(orderId.trim()) })
+            await this.disconnect();
+            return order;
+        } catch ({ message }) {
+            throw new Error(`Error getting the order [${ message }]`)
+        }
+    }
+
+    async update(object) {
+        try {
+            const collection = await this.connect();
+            const register = await collection.findOneAndUpdate({ _id: object._id }, { $set: object });
+            await this.disconnect();
+            return register;
+        } catch ({ message }) {
+            throw new Error(`Error updating the order [${ message }]`)
+        }
+    }
+
 }
 
 export default OrderDAO;
