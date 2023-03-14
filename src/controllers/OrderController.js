@@ -3,6 +3,7 @@ import jwt from 'jsonwebtoken';
 import { errorLogger } from "../config/logger.js";
 import CarDAO from "../dao/CarDAO.js";
 import OrderDAO from '../dao/OrderDAO.js';
+import { OrderDTO } from '../dto/OrderDTO.js';
 import { ProductOrderDetailDTO } from '../dto/ProductDTO.js';
 
 const carContainer = new CarDAO();
@@ -40,6 +41,23 @@ export async function generateOrder(req, res) {
         await carContainer.update(car);
         res.status(200).send({ status: 'ok', message: 'Order saved successfully', data: order });
     } catch ({ message }) {
+        errorLogger.error(message);
+        res.status(400).send({ status: 'error', message });
+    }
+}
+
+export async function getOrderDetail(req, res) {
+    try {
+        const { authorization } = req.headers;
+        const { id } = req.params;
+        const { userId } = jwt.verify(authorization.split(' ')[2], process.env.SECRET);
+        const order = await orderContainer.getByUser(id, userId);
+        if( !order ) {
+            res.status(400).send({ status: 'error', message: 'Order not found' });
+            return;
+        }
+        res.status(200).send({ status: 'ok', message: 'Order getted successfully', data: new OrderDTO(order) });
+    } catch (error) {
         errorLogger.error(message);
         res.status(400).send({ status: 'error', message });
     }
