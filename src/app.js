@@ -8,16 +8,12 @@ import { configureLogger, logger, warnLogger } from './config/logger.js';
 import os from 'os';
 import { configureMessageSocket } from './websocket/messageSocket.js';
 import carRoutes from './routes/car.js';
+import orderRoutes from './routes/order.js';
 
 dotenv.config();
 configureLogger();
 
-const argv = yargs(process.argv.slice(1))
-    .default('modo', 'FORK')
-    .alias('m', 'modo')
-    .alias('c', 'cluster')
-    .argv;
-
+const argv = yargs(process.argv.slice(1)).default('modo', 'FORK').alias('m', 'modo').alias('c', 'cluster').argv;
 
 const SERVER_TYPE = argv.modo || 'FORK';
 
@@ -46,6 +42,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/api/product', productRoutes);
 app.use('/api/user', userRouters);
 app.use('/api/car', carRoutes);
+app.use('/api/order', orderRoutes);
 
 app.use((req, res) => {
     warnLogger.warn(`Intentando ingresar una runa no implementada ${ req.baseUrl }${ req.url } método ${ req.method }`);
