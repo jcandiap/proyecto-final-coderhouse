@@ -12,7 +12,7 @@ export function validateGenerateOrder() {
     next();   
 }
 
-export function validateGetOrder() {
+export function validateGetOrder(req, res, next) {
     const { authorization } = req.headers;
     const { id } = req.params;
     if( !authorization || !authorization.split(' ')[2] ) {
