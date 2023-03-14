@@ -11,6 +11,7 @@ export class RegisterUserDTO {
         this.age = data?.age || 0;
         this.status = 'active';
         this.createdAt = new Date().getTime();
+        this.isAdmin = data?.isAdmin || false;
     }
 }
 
@@ -23,5 +24,6 @@ export class ReturnUserDTO {
         this.phoneNumber = data?.phoneNumber || '';
         this.country = data?.country || '';
         this.createdAt = new Date().getTime();
+        this.isAdmin = data?.isAdmin || false;
     }
 }
