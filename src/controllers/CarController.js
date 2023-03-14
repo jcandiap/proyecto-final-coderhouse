@@ -111,23 +111,3 @@ export async function deleteProduct(req, res) {
         res.status(400).send({ status: 'error', message });
     }
 }
-
-export async function passCarToOrder(req, res) {
-    try {
-        const { authorization } = req.headers;
-        const { carId } = req.body;
-        const token = jwt.verify(authorization.split(' ')[2], process.env.SECRET);
-        const car = await carContainer.getByUser(carId, token.userId);
-        if( !car ) {
-            res.status(400).send({ status: 'error', message: 'Car not found' });
-            return;
-        }
-        if( car.products.length < 1 ) {
-            res.status(400).send({ status: 'error', message: 'Car without elements to buy' });
-            return;
-        }
-    } catch ({ message }) {
-        errorLogger.error(message);
-        res.status(400).send({ status: 'error', message });
-    }
-}
