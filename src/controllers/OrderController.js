@@ -79,7 +79,7 @@ export async function confirmOrder(req, res) {
             res.status(400).send({ status: 'error', message: 'Order not found' });
             return;
         }
-        const { name, email } = userContainer.getById(userId);
+        const { name, email } = await userContainer.getById(userId);
         order.paymentId = paymentId;
         order.status = 'paied';
         await orderContainer.update(order);
